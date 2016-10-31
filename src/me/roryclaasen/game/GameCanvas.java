@@ -22,7 +22,7 @@ public class GameCanvas extends Canvas {
 	}
 
 	public void init() {
-		gamePanel = new Panel();
+		gamePanel = new Panel(this);
 	}
 
 	public void update() {

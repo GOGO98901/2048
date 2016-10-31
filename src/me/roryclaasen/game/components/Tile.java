@@ -3,6 +3,8 @@ package me.roryclaasen.game.components;
 import java.awt.Color;
 
 public class Tile {
+
+	public static int SIZE = 80;
 	private int stage;
 
 	public Tile(int stage) {

@@ -20,7 +20,7 @@ public class ResourceManager {
 	}
 
 	public static enum Colors {
-		BACKGROUND("#FFE0B2"), DEBUG(173, 255, 47), DEBUG_BACK(0, 0, 0, 255 / 2);
+		BACKGROUND("#FFE0B2"), DEBUG(173, 255, 47), DEBUG_BACK(0, 0, 0, 255 / 2), TILE_TEXT(255, 255, 255), TILE_BLANK("#B0BEC5");
 		private Color color;
 
 		Colors(Color color) {
