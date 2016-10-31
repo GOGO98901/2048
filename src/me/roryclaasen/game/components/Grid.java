@@ -56,7 +56,7 @@ public class Grid {
 		if (x < 0 || x >= width || y < 0 || y >= height) return null;
 		int id = tiles[x + y * width];
 		if (id <= 0) return null;
-		if (!tileMap.containsKey(id)) tileMap.put(id, new Tile(id));
+		if (!tileMap.containsKey(id)) tileMap.put(id, new Tile(id - 1));
 		return tileMap.get(id);
 	}
 
