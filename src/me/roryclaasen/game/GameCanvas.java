@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import me.roryclaasen.game.components.Panel;
-import me.roryclaasen.game.res.ResourceManager;
+import me.roryclaasen.game.resource.ResourceManager;
 import me.roryclaasen.util.Log;
 
 public class GameCanvas extends Canvas {

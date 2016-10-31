@@ -1,4 +1,4 @@
-package me.roryclaasen.game.res;
+package me.roryclaasen.game.resource;
 
 import java.awt.Color;
 import java.util.HashMap;

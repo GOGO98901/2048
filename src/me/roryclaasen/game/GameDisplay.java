@@ -4,7 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import me.roryclaasen.game.res.ResourceManager;
+import me.roryclaasen.game.resource.ResourceManager;
 import me.roryclaasen.util.Log;
 
 public class GameDisplay {
