@@ -12,7 +12,7 @@ public class Tile {
 	}
 
 	public int getNumber() {
-		return 2 ^ stage;
+		return (int) Math.pow(2, stage);
 	}
 
 	public Color getColor() {
