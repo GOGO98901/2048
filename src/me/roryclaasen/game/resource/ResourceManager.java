@@ -1,6 +1,8 @@
 package me.roryclaasen.game.resource;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.IOException;
 
 import me.roryclaasen.language.LangUtil;
@@ -8,6 +10,8 @@ import me.roryclaasen.language.LanguageFile;
 import me.roryclaasen.util.Log;
 
 public class ResourceManager {
+	
+	public static Font roboto = loadFont("assets/fonts/Roboto-Bold.ttf");
 
 	public static void init() {
 		LanguageFile enUK = new LanguageFile("assets/lang/en_GB.lang");
@@ -58,5 +62,15 @@ public class ResourceManager {
 
 	private static Color getColorFromHex(String hex) {
 		return new Color(Integer.valueOf(hex.substring(1, 3), 16), Integer.valueOf(hex.substring(3, 5), 16), Integer.valueOf(hex.substring(5, 7), 16));
+	}
+
+	private static Font loadFont(String ref) {
+		Log.info("loading font '" + ref + "'");
+		try {
+			return Font.createFont(java.awt.Font.TRUETYPE_FONT, ResourceManager.class.getClassLoader().getResourceAsStream(ref));
+		} catch (FontFormatException | IOException e) {
+			Log.warn("failed to load font '" + ref + "'");
+		}
+		return null;
 	}
 }
