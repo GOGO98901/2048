@@ -46,6 +46,7 @@ public class Panel {
 					g.setColor(tile.getColor());
 					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, tileCurve, tileCurve);
 					g.setColor(ResourceManager.colors.TILE_TEXT.get());
+					g.setFont(g.getFont().deriveFont(32f).deriveFont(Font.BOLD));
 					drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
 				}
 			}

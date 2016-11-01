@@ -8,8 +8,8 @@ import me.roryclaasen.language.LanguageFile;
 import me.roryclaasen.util.Log;
 
 public class ResourceManager {
-	
-	public static void init(){
+
+	public static void init() {
 		LanguageFile enUK = new LanguageFile("assets/lang/en_GB.lang");
 		try {
 			Log.info("Reading language file");
@@ -24,14 +24,18 @@ public class ResourceManager {
 	public static enum colors {
 		BACKGROUND("#FFE0B2"), //
 		DEBUG(173, 255, 47), //
-		DEBUG_BACK(0, 0, 0, 255 / 2), //
-		PANEL_BACKGROUND(255, 255, 255, 75), //
-		TILE_TEXT(255, 255, 255), //
+		DEBUG_BACK(Color.BLACK, 255 / 2), //
+		PANEL_BACKGROUND(Color.WHITE, 75), //
+		TILE_TEXT(Color.WHITE), //
 		TILE_BLANK("#B0BEC5");
 		private Color color;
 
 		colors(Color color) {
 			this.color = color;
+		}
+
+		colors(Color color, int alpha) {
+			this.color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 		}
 
 		colors(String hex) {
