@@ -27,7 +27,7 @@ public class ResourceManager {
 		DEBUG_BACK(Color.BLACK, 255 / 2), //
 		PANEL_BACKGROUND(Color.WHITE, 75), //
 		TILE_TEXT(Color.WHITE), //
-		TILE_BLANK("#B0BEC5");
+		TILE_BLANK(Color.GRAY.brighter());
 		private Color color;
 
 		colors(Color color) {
