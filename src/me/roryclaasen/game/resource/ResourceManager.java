@@ -28,6 +28,7 @@ public class ResourceManager {
 		PANEL_BACKGROUND(Color.WHITE, 75), //
 		TILE_TEXT(Color.WHITE), //
 		TILE_BLANK(Color.GRAY.brighter());
+
 		private Color color;
 
 		colors(Color color) {

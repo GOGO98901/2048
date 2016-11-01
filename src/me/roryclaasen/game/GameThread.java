@@ -1,5 +1,6 @@
 package me.roryclaasen.game;
 
+import me.roryclaasen.game.handler.GameHandler;
 import me.roryclaasen.game.resource.ResourceManager;
 import me.roryclaasen.util.Log;
 
@@ -9,6 +10,7 @@ public class GameThread implements Runnable {
 	private boolean running;
 
 	private GameCanvas canvas;
+	private GameHandler handler;
 	private GameDisplay display;
 
 	private int fps, ups;
@@ -16,6 +18,7 @@ public class GameThread implements Runnable {
 	public GameThread() {
 		display = new GameDisplay();
 		canvas = new GameCanvas(this);
+		handler = new GameHandler(this);
 	}
 
 	public boolean init() {
@@ -62,6 +65,7 @@ public class GameThread implements Runnable {
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			while (delta >= 1) {
+				handler.update();
 				canvas.update();
 				updates++;
 				delta -= 1;
