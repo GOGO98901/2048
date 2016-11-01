@@ -1,5 +1,6 @@
 package me.roryclaasen.game;
 
+import me.roryclaasen.game.resource.ResourceManager;
 import me.roryclaasen.util.Log;
 
 public class GameThread implements Runnable {
@@ -18,6 +19,7 @@ public class GameThread implements Runnable {
 	}
 
 	public boolean init() {
+		ResourceManager.init();
 		display.init(canvas);
 		canvas.init();
 		return true;

@@ -1,0 +1,3 @@
+[submodule "languageUtils"]
+	path = languageUtils
+	url = https://github.com/GOGO98901/language-file-reader.git

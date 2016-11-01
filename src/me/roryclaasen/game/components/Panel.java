@@ -12,6 +12,12 @@ public class Panel {
 	private GameCanvas canvas;
 	private Grid grid;
 
+	private int tileCurve = Tile.SIZE / 8;
+	private int panelCurve = tileCurve + 10;
+
+	private int gridWidth;
+	private int gridHeight;
+
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
 		this.grid = new Grid();
@@ -19,26 +25,27 @@ public class Panel {
 	}
 
 	public void update() {
-
+		gridWidth = ((Tile.SIZE + 5) * grid.getWidth()) - 5;
+		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
 	}
 
 	public void render(Graphics g) {
-		int gridWidth = ((Tile.SIZE + 5) * grid.getWidth()) - 5;
-		int gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
 		int xOffset = (canvas.getWidth() / 2) - (gridWidth / 2);
 		int yOffset = (canvas.getHeight() / 2) - (gridHeight / 2);
+		g.setColor(ResourceManager.colors.PANEL_BACKGROUND.get());
+		g.fillRoundRect(xOffset - 10, yOffset - 10, gridWidth + 20, gridHeight + 20, panelCurve, panelCurve);
 		for (int tX = 0; tX < grid.getWidth(); tX++) {
 			for (int tY = 0; tY < grid.getHeight(); tY++) {
 				Tile tile = grid.getTile(tX, tY);
 				int rX = xOffset + ((Tile.SIZE + 5) * tX);
 				int rY = yOffset + ((Tile.SIZE + 5) * tY);
 				if (tile == null) {
-					g.setColor(ResourceManager.Colors.TILE_BLANK.get());
-					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, Tile.SIZE / 8, Tile.SIZE / 8);
+					g.setColor(ResourceManager.colors.TILE_BLANK.get());
+					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, tileCurve, tileCurve);
 				} else {
 					g.setColor(tile.getColor());
-					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, Tile.SIZE / 8, Tile.SIZE / 8);
-					g.setColor(ResourceManager.Colors.TILE_TEXT.get());
+					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, tileCurve, tileCurve);
+					g.setColor(ResourceManager.colors.TILE_TEXT.get());
 					drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
 				}
 			}

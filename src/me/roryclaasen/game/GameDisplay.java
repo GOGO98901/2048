@@ -4,7 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import me.roryclaasen.game.resource.ResourceManager;
+import me.roryclaasen.language.LangUtil;
 import me.roryclaasen.util.Log;
 
 public class GameDisplay {
@@ -16,7 +16,7 @@ public class GameDisplay {
 		frame.add(canvas);
 		frame.setResizable(false);
 		frame.pack();
-		frame.setTitle(ResourceManager.getString("game.title"));
+		frame.setTitle(LangUtil.get("game.title"));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 	}

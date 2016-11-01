@@ -38,11 +38,11 @@ public class GameCanvas extends Canvas {
 			}
 			Graphics g = bs.getDrawGraphics();
 
-			g.setColor(ResourceManager.Colors.BACKGROUND.get());
+			g.setColor(ResourceManager.colors.BACKGROUND.get());
 			g.fillRect(0, 0, width, height);
-			g.setColor(ResourceManager.Colors.DEBUG_BACK.get());
+			g.setColor(ResourceManager.colors.DEBUG_BACK.get());
 			g.fillRect(0, 0, 50, 25);
-			g.setColor(ResourceManager.Colors.DEBUG.get());
+			g.setColor(ResourceManager.colors.DEBUG.get());
 			g.drawString(_gameThread.getFps() + " fps", 2, 11);
 			g.drawString(_gameThread.getUps() + " ups", 2, 22);
 
