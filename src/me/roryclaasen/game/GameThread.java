@@ -33,6 +33,7 @@ public class GameThread implements Runnable {
 		running = true;
 
 		display.show();
+		canvas.requestFocus();
 		Log.info("Starting the game thread");
 		_thread = new Thread(this, "2048 (host)");
 		_thread.start();

@@ -24,6 +24,8 @@ public class GameDisplay {
 	public void show() {
 		Log.info("Setting display to be visible");
 		frame.setVisible(true);
+		frame.requestFocus();
+		frame.requestFocusInWindow();
 	}
 
 	public void destroy() {

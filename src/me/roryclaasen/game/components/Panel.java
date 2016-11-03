@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import me.roryclaasen.game.GameCanvas;
+import me.roryclaasen.game.handler.GameHandler;
 import me.roryclaasen.game.resource.ResourceManager;
 
 public class Panel {
@@ -18,6 +19,8 @@ public class Panel {
 	private int gridWidth;
 	private int gridHeight;
 
+	private boolean animating = false;
+
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
 		this.grid = new Grid();
@@ -27,6 +30,29 @@ public class Panel {
 	public void update() {
 		gridWidth = ((Tile.SIZE + 5) * grid.getWidth()) - 5;
 		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
+
+		if (!animating) {
+			if (GameHandler.keys().up ^ GameHandler.keys().down) {
+				animating = true;
+				if (GameHandler.keys().up) {
+					grid.move(Grid.Direction.UP);
+				}
+				if (GameHandler.keys().down) {
+
+				}
+			}
+			if (GameHandler.keys().left ^ GameHandler.keys().right) {
+				animating = true;
+				if (GameHandler.keys().left) {
+
+				}
+				if (GameHandler.keys().right) {
+
+				}
+			}
+		} else {
+			if (!(GameHandler.keys().up || GameHandler.keys().down || GameHandler.keys().left || GameHandler.keys().right)) animating = false;
+		}
 	}
 
 	public void render(Graphics g) {
