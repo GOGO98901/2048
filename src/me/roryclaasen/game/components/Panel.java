@@ -36,18 +36,22 @@ public class Panel {
 				animating = true;
 				if (GameHandler.keys().up) {
 					grid.move(Grid.Direction.UP);
+					grid.newRandomTile();
 				}
 				if (GameHandler.keys().down) {
-
+					grid.move(Grid.Direction.DOWN);
+					grid.newRandomTile();
 				}
 			}
 			if (GameHandler.keys().left ^ GameHandler.keys().right) {
 				animating = true;
 				if (GameHandler.keys().left) {
-
+					grid.move(Grid.Direction.LEFT);
+					grid.newRandomTile();
 				}
 				if (GameHandler.keys().right) {
-
+					grid.move(Grid.Direction.RIGHT);
+					grid.newRandomTile();
 				}
 			}
 		} else {
