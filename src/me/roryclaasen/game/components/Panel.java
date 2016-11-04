@@ -62,7 +62,7 @@ public class Panel {
 		}
 
 		if (grid.getTilesToPulse().size() == 0) {
-			if (!moving) animating = false;
+			if (!moving && !pulse) animating = false;
 		} else pulse = true;
 
 		if (pulse) {
@@ -85,16 +85,11 @@ public class Panel {
 				Tile tile = grid.getTile(tX, tY);
 				int rX = xOffset + ((Tile.SIZE + 5) * tX);
 				int rY = yOffset + ((Tile.SIZE + 5) * tY);
-				int tS = Tile.SIZE;
 				if (tile == null) {
 					g.setColor(ResourceManager.colors.TILE_BLANK.get());
-					g.fillRoundRect(rX, rY, tS, tS, tileCurve, tileCurve);
+					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, tileCurve, tileCurve);
 				} else {
-					g.setColor(tile.getColor());
-					g.fillRoundRect(rX, rY, tS, tS, tileCurve, tileCurve);
-					g.setColor(ResourceManager.colors.TILE_TEXT.get());
-					g.setFont(ResourceManager.roboto.deriveFont(32f));
-					drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
+					drawTile(g, tile, rX, rY, Tile.SIZE);
 				}
 			}
 		}
@@ -106,17 +101,20 @@ public class Panel {
 				int offset = (int) (Math.sin(pulseTime / 2) * 10) / 2;
 				int rX = xOffset + ((Tile.SIZE + 5) * tX) - (offset / 2);
 				int rY = yOffset + ((Tile.SIZE + 5) * tY) - (offset / 2);
-				int tS = Tile.SIZE + offset;
-				g.setColor(tile.getColor());
-				g.fillRoundRect(rX, rY, tS, tS, tileCurve, tileCurve);
-				g.setColor(ResourceManager.colors.TILE_TEXT.get());
-				g.setFont(ResourceManager.roboto.deriveFont(32f));
-				drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
+				drawTile(g, tile, rX, rY, Tile.SIZE + offset);
 			}
 		}
 	}
 
-	public void drawCenteredString(Graphics g, String text, int cX, int cY, Font font) {
+	private void drawTile(Graphics g, Tile tile, int rX, int rY, int rS) {
+		g.setColor(tile.getColor());
+		g.fillRoundRect(rX, rY, rS, rS, tileCurve, tileCurve);
+		g.setColor(ResourceManager.colors.TILE_TEXT.get());
+		g.setFont(ResourceManager.roboto.deriveFont(32f));
+		drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
+	}
+
+	private void drawCenteredString(Graphics g, String text, int cX, int cY, Font font) {
 		FontMetrics metrics = g.getFontMetrics(font);
 		Rectangle rect = new Rectangle(cX, cY, Tile.SIZE, Tile.SIZE);
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
