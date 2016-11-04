@@ -19,7 +19,9 @@ public class Panel {
 	private int gridWidth;
 	private int gridHeight;
 
-	private boolean animating = false;
+	private int pulseTime = 0;
+
+	private boolean animating = false, moving = false, pulse = false;
 
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
@@ -31,9 +33,10 @@ public class Panel {
 		gridWidth = ((Tile.SIZE + 5) * grid.getWidth()) - 5;
 		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
 
+		if (moving) animating = true;
 		if (!animating) {
 			if (GameHandler.keys().up ^ GameHandler.keys().down) {
-				animating = true;
+				moving = animating = true;
 				if (GameHandler.keys().up) {
 					grid.move(Grid.Direction.UP);
 					grid.newRandomTile();
@@ -44,7 +47,7 @@ public class Panel {
 				}
 			}
 			if (GameHandler.keys().left ^ GameHandler.keys().right) {
-				animating = true;
+				moving = animating = true;
 				if (GameHandler.keys().left) {
 					grid.move(Grid.Direction.LEFT);
 					grid.newRandomTile();
@@ -55,7 +58,20 @@ public class Panel {
 				}
 			}
 		} else {
-			if (!(GameHandler.keys().up || GameHandler.keys().down || GameHandler.keys().left || GameHandler.keys().right)) animating = false;
+			if (!(GameHandler.keys().up || GameHandler.keys().down || GameHandler.keys().left || GameHandler.keys().right)) moving = false;
+		}
+
+		if (grid.getTilesToPulse().size() == 0) {
+			if (!moving) animating = false;
+		} else pulse = true;
+
+		if (pulse) {
+			pulseTime++;
+			if (pulseTime > 15) {
+				pulseTime = 0;
+				pulse = false;
+				grid.getTilesToPulse().clear();
+			}
 		}
 	}
 
@@ -69,16 +85,33 @@ public class Panel {
 				Tile tile = grid.getTile(tX, tY);
 				int rX = xOffset + ((Tile.SIZE + 5) * tX);
 				int rY = yOffset + ((Tile.SIZE + 5) * tY);
+				int tS = Tile.SIZE;
 				if (tile == null) {
 					g.setColor(ResourceManager.colors.TILE_BLANK.get());
-					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, tileCurve, tileCurve);
+					g.fillRoundRect(rX, rY, tS, tS, tileCurve, tileCurve);
 				} else {
 					g.setColor(tile.getColor());
-					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, tileCurve, tileCurve);
+					g.fillRoundRect(rX, rY, tS, tS, tileCurve, tileCurve);
 					g.setColor(ResourceManager.colors.TILE_TEXT.get());
 					g.setFont(ResourceManager.roboto.deriveFont(32f));
 					drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
 				}
+			}
+		}
+		for (int[] tilePulse : grid.getTilesToPulse()) {
+			int tX = tilePulse[0];
+			int tY = tilePulse[1];
+			Tile tile = grid.getTile(tX, tY);
+			if (tile != null) {
+				int offset = (int) (Math.sin(pulseTime / 2) * 10) / 2;
+				int rX = xOffset + ((Tile.SIZE + 5) * tX) - (offset / 2);
+				int rY = yOffset + ((Tile.SIZE + 5) * tY) - (offset / 2);
+				int tS = Tile.SIZE + offset;
+				g.setColor(tile.getColor());
+				g.fillRoundRect(rX, rY, tS, tS, tileCurve, tileCurve);
+				g.setColor(ResourceManager.colors.TILE_TEXT.get());
+				g.setFont(ResourceManager.roboto.deriveFont(32f));
+				drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
 			}
 		}
 	}

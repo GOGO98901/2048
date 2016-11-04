@@ -1,6 +1,8 @@
 package me.roryclaasen.game.components;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -11,6 +13,7 @@ public class Grid {
 
 	private Random random;
 	private Map<Integer, Tile> tileMap;
+	private List<int[]> pulse;
 
 	private int width, height;
 	private int[] tiles;
@@ -22,6 +25,7 @@ public class Grid {
 	public Grid() {
 		random = new Random();
 		tileMap = new HashMap<Integer, Tile>();
+		pulse = new ArrayList<int[]>();
 	}
 
 	public void newGrid() {
@@ -34,11 +38,11 @@ public class Grid {
 		this.tiles = null;
 		this.tiles = new int[width * height];
 		newRandomTile(1);
-		newRandomTile(1);
-
+		newRandomTile();
 	}
 
 	public void move(Direction direction) {
+		pulse.clear();
 		if (direction == Direction.UP) {
 			for (int i = 0; i < height; i++) {
 				boolean inc = false;
@@ -55,6 +59,7 @@ public class Grid {
 									inc = true;
 									setTile(x, y - 1, current.getStage() + 2);
 									setTile(x, y, 0);
+									pulse.add(new int[] { x, y - 1 });
 								}
 							}
 						}
@@ -78,6 +83,7 @@ public class Grid {
 									inc = true;
 									setTile(x, y + 1, current.getStage() + 2);
 									setTile(x, y, 0);
+									pulse.add(new int[] { x, y + 1 });
 								}
 							}
 						}
@@ -101,6 +107,7 @@ public class Grid {
 									inc = true;
 									setTile(x - 1, y, current.getStage() + 2);
 									setTile(x, y, 0);
+									pulse.add(new int[] { x - 1, y });
 								}
 							}
 						}
@@ -124,6 +131,7 @@ public class Grid {
 									inc = true;
 									setTile(x + 1, y, current.getStage() + 2);
 									setTile(x, y, 0);
+									pulse.add(new int[] { x + 1, y });
 								}
 							}
 						}
@@ -145,6 +153,7 @@ public class Grid {
 		}
 		Log.info("Creating new Tile at x=" + x + ", y=" + y + ", id=" + id);
 		tiles[x + y * width] = id;
+		pulse.add(new int[] { x, y });
 	}
 
 	public void newRandomTile() {
@@ -185,5 +194,9 @@ public class Grid {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public List<int[]> getTilesToPulse() {
+		return pulse;
 	}
 }
