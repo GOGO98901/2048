@@ -4,39 +4,44 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import me.roryclaasen.game.GameCanvas;
+import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.handler.GameHandler;
 import me.roryclaasen.game.resource.ResourceManager;
+import me.roryclaasen.util.Log;
 
 public class Panel {
 	private GameCanvas canvas;
 	private Grid grid;
 
-	private int tileCurve = Tile.SIZE / 8;
-	private int panelCurve = tileCurve + 10;
+	private int gridWidth, gridHeight;
+	private int xOffset, yOffset;
 
-	private int gridWidth;
-	private int gridHeight;
+	private List<Animation> anims;
 
-	private int pulseTime = 0;
-
-	private boolean animating = false, moving = false, pulse = false;
+	private boolean animating = false, allowMove = true;
 
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
-		this.grid = new Grid();
+		this.grid = new Grid(this);
 		this.grid.newGrid();
+		this.anims = new ArrayList<Animation>();
 	}
 
 	public void update() {
 		gridWidth = ((Tile.SIZE + 5) * grid.getWidth()) - 5;
 		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
+		xOffset = (canvas.getWidth() / 2) - (gridWidth / 2);
+		yOffset = (canvas.getHeight() / 2) - (gridHeight / 2);
 
-		if (moving) animating = true;
-		if (!animating) {
+		if (!animating && allowMove) {
 			if (GameHandler.keys().up ^ GameHandler.keys().down) {
-				moving = animating = true;
+				animating = true;
+				allowMove = false;
 				if (GameHandler.keys().up) {
 					grid.move(Grid.Direction.UP);
 					grid.newRandomTile();
@@ -47,7 +52,8 @@ public class Panel {
 				}
 			}
 			if (GameHandler.keys().left ^ GameHandler.keys().right) {
-				moving = animating = true;
+				animating = true;
+				allowMove = false;
 				if (GameHandler.keys().left) {
 					grid.move(Grid.Direction.LEFT);
 					grid.newRandomTile();
@@ -58,57 +64,69 @@ public class Panel {
 				}
 			}
 		} else {
-			if (!(GameHandler.keys().up || GameHandler.keys().down || GameHandler.keys().left || GameHandler.keys().right)) moving = false;
+			if (!(GameHandler.keys().up || GameHandler.keys().down || GameHandler.keys().left || GameHandler.keys().right)) allowMove = true;
 		}
 
-		if (grid.getTilesToPulse().size() == 0) {
-			if (!moving && !pulse) animating = false;
-		} else pulse = true;
-
-		if (pulse) {
-			pulseTime++;
-			if (pulseTime > 15) {
-				pulseTime = 0;
-				pulse = false;
-				grid.getTilesToPulse().clear();
+		Iterator<Animation> itAnims = anims.listIterator();
+		while (itAnims.hasNext()) {
+			Animation anim = itAnims.next();
+			if (grid.getTile(anim.getX(), anim.getY()) == null) anim.remove();
+			else anim.update();
+			
+			if (anim.isRemoved()) {
+				Iterator<int[]> itSkips = grid.getSkipRender().listIterator();
+				while (itSkips.hasNext()) {
+					int[] coord = itSkips.next();
+					if (coord[0] == anim.getX() && coord[1] == anim.getY()) {
+						itSkips.remove();
+					}
+				}
+				itAnims.remove();
 			}
 		}
+		if (anims.size() == 0) animating = false;
 	}
 
 	public void render(Graphics g) {
-		int xOffset = (canvas.getWidth() / 2) - (gridWidth / 2);
-		int yOffset = (canvas.getHeight() / 2) - (gridHeight / 2);
 		g.setColor(ResourceManager.colors.PANEL_BACKGROUND.get());
-		g.fillRoundRect(xOffset - 10, yOffset - 10, gridWidth + 20, gridHeight + 20, panelCurve, panelCurve);
+		g.fillRoundRect(xOffset - 10, yOffset - 10, gridWidth + 20, gridHeight + 20, 25, 25);
 		for (int tX = 0; tX < grid.getWidth(); tX++) {
 			for (int tY = 0; tY < grid.getHeight(); tY++) {
+				boolean skip = false;
+				Iterator<int[]> itSkips = grid.getSkipRender().listIterator();
+				while (itSkips.hasNext() && !skip) {
+					int[] coord = itSkips.next();
+					if (coord[0] == tX && coord[1] == tY) {
+						skip = true;
+					}
+				}
+				if (skip) continue;
 				Tile tile = grid.getTile(tX, tY);
 				int rX = xOffset + ((Tile.SIZE + 5) * tX);
 				int rY = yOffset + ((Tile.SIZE + 5) * tY);
 				if (tile == null) {
 					g.setColor(ResourceManager.colors.TILE_BLANK.get());
-					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, tileCurve, tileCurve);
+					g.fillRoundRect(rX, rY, Tile.SIZE, Tile.SIZE, TileAttributes.DEFAULT.getTileCurve(), TileAttributes.DEFAULT.getTileCurve());
 				} else {
-					drawTile(g, tile, rX, rY, Tile.SIZE);
+					drawTile(g, tile, tX, tY);
 				}
 			}
 		}
-		for (int[] tilePulse : grid.getTilesToPulse()) {
-			int tX = tilePulse[0];
-			int tY = tilePulse[1];
-			Tile tile = grid.getTile(tX, tY);
-			if (tile != null) {
-				int offset = (int) (Math.sin(pulseTime / 2) * 10) / 2;
-				int rX = xOffset + ((Tile.SIZE + 5) * tX) - (offset / 2);
-				int rY = yOffset + ((Tile.SIZE + 5) * tY) - (offset / 2);
-				drawTile(g, tile, rX, rY, Tile.SIZE + offset);
-			}
+		Iterator<Animation> itAnims = anims.listIterator();
+		while (itAnims.hasNext()) {
+			itAnims.next().render(g);
 		}
 	}
 
-	private void drawTile(Graphics g, Tile tile, int rX, int rY, int rS) {
+	public void drawTile(Graphics g, Tile tile, int gX, int gY) {
+		drawTile(g, tile, gX, gY, TileAttributes.DEFAULT);
+	}
+
+	public void drawTile(Graphics g, Tile tile, int gX, int gY, TileAttributes attribs) {
+		int rX = xOffset + ((Tile.SIZE + 5) * gX) - attribs.getxOffset();
+		int rY = yOffset + ((Tile.SIZE + 5) * gY) - attribs.getyOffset();
 		g.setColor(tile.getColor());
-		g.fillRoundRect(rX, rY, rS, rS, tileCurve, tileCurve);
+		g.fillRoundRect(rX, rY, attribs.getSize(), attribs.getSize(), attribs.getTileCurve(), attribs.getTileCurve());
 		g.setColor(ResourceManager.colors.TILE_TEXT.get());
 		g.setFont(ResourceManager.roboto.deriveFont(32f));
 		drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
@@ -121,5 +139,14 @@ public class Panel {
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 		g.setFont(font);
 		g.drawString(text, rect.x + x, rect.y + y);
+	}
+
+	public void addAnim(Animation anim) {
+		anims.add(anim);
+		anim.start();
+	}
+
+	public Grid getGrid() {
+		return grid;
 	}
 }

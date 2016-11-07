@@ -16,7 +16,7 @@ public class Tile {
 	}
 
 	public int getNumber() {
-		return (int) Math.pow(2, stage);
+		return (int) Math.pow(2, stage + 1);
 	}
 
 	public int getStage() {

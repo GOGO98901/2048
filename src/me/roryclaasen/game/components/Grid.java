@@ -6,26 +6,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import me.roryclaasen.game.components.anim.Animation;
+import me.roryclaasen.game.components.anim.PulseAnimation;
 import me.roryclaasen.util.Log;
 
 public class Grid {
 	public final int WIDTH = 4, HEIGHT = 4;
 
+	private Panel panel;
 	private Random random;
 	private Map<Integer, Tile> tileMap;
-	private List<int[]> pulse;
 
 	private int width, height;
 	private int[] tiles;
+
+	private List<int[]> skipRender;
 
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
 	}
 
-	public Grid() {
-		random = new Random();
-		tileMap = new HashMap<Integer, Tile>();
-		pulse = new ArrayList<int[]>();
+	public Grid(Panel panel) {
+		this.panel = panel;
+		this.random = new Random();
+		this.tileMap = new HashMap<Integer, Tile>();
+		this.skipRender = new ArrayList<int[]>();
 	}
 
 	public void newGrid() {
@@ -42,8 +47,8 @@ public class Grid {
 	}
 
 	public void move(Direction direction) {
-		pulse.clear();
-		if (direction == Direction.UP) {
+		switch (direction) {
+		case UP: {
 			for (int i = 0; i < height; i++) {
 				boolean inc = false;
 				for (int x = 0; x < width; x++) {
@@ -52,8 +57,9 @@ public class Grid {
 					}
 				}
 			}
+			break;
 		}
-		if (direction == Direction.DOWN) {
+		case DOWN: {
 			for (int i = 0; i < height; i++) {
 				boolean inc = false;
 				for (int x = 0; x < width; x++) {
@@ -62,8 +68,9 @@ public class Grid {
 					}
 				}
 			}
+			break;
 		}
-		if (direction == Direction.LEFT) {
+		case LEFT: {
 			for (int i = 0; i < width; i++) {
 				boolean inc = false;
 				for (int y = 0; y < height; y++) {
@@ -72,8 +79,9 @@ public class Grid {
 					}
 				}
 			}
+			break;
 		}
-		if (direction == Direction.RIGHT) {
+		case RIGHT: {
 			for (int i = 0; i < width; i++) {
 				boolean inc = false;
 				for (int y = 0; y < height; y++) {
@@ -82,6 +90,8 @@ public class Grid {
 					}
 				}
 			}
+			break;
+		}
 		}
 	}
 
@@ -97,14 +107,23 @@ public class Grid {
 					if (inc) setTile(x + xOffset, y + yOffset, current.getStage() + 1);
 					else {
 						setTile(x + xOffset, y + yOffset, current.getStage() + 2);
-						pulse.add(new int[] { x + xOffset, y+yOffset });
 					}
+					newAnim(PulseAnimation.class, x + xOffset, y + yOffset);
 					inc = true;
 					setTile(x, y, 0);
 				}
 			}
 		}
 		return inc;
+	}
+
+	private void newAnim(Class<? extends Animation> anim, int x, int y) {
+			skipRender.add(new int[] { x, y });
+			if (anim.getCanonicalName().equals(PulseAnimation.class.getCanonicalName())) {
+				panel.addAnim(new PulseAnimation(panel, getTile(x, y), x, y));
+			} else {
+				Log.warn("Unknow animation type");
+			}
 	}
 
 	public void newRandomTile(int id) {
@@ -119,12 +138,11 @@ public class Grid {
 		}
 		Log.info("Creating new Tile at x=" + x + ", y=" + y + ", id=" + id);
 		tiles[x + y * width] = id;
-		pulse.add(new int[] { x, y });
 	}
 
 	public void newRandomTile() {
-		if (getHightestStage() >= 4) newRandomTile(random.nextInt(3) + 1);
-		else newRandomTile(random.nextInt(2) + 1);
+		if (getHightestStage() >= 32) newRandomTile(random.nextInt(3) + 1);
+		else newRandomTile(1);
 	}
 
 	public void setTile(int x, int y, int id) {
@@ -154,15 +172,15 @@ public class Grid {
 		return max;
 	}
 
+	public List<int[]> getSkipRender() {
+		return skipRender;
+	}
+
 	public int getWidth() {
 		return width;
 	}
 
 	public int getHeight() {
 		return height;
-	}
-
-	public List<int[]> getTilesToPulse() {
-		return pulse;
 	}
 }
