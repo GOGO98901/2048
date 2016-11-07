@@ -31,9 +31,9 @@ public class ResourceManager {
 		DEBUG_BACK(Color.BLACK, 255 / 2), //
 		PANEL_BACKGROUND("8D6E63"), //
 		TILE_TEXT(Color.WHITE), //
-		TILE_BLANK("BCAAA4"), //
-		TILE_ONE("E0E0E0"), //
-		TILE_TWO("A1887F"), //
+		TILE_BLANK("dcd3d0", 100), //
+		TILE_ONE("c1b1ab"), //
+		TILE_TWO("7a625a"), //
 		TILE_THREE("FFB74D"), //
 		TILE_FOUR("FF8A65"), //
 		TILE_FIVE("AED581"), //
@@ -54,6 +54,10 @@ public class ResourceManager {
 
 		colors(String hex) {
 			this(getColorFromHex(hex));
+		}
+
+		colors(String hex, int alpha) {
+			this(getColorFromHex(hex), alpha);
 		}
 
 		colors(int r, int g, int b, int a) {
