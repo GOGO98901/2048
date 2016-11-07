@@ -1,4 +1,4 @@
-package me.roryclaasen.game.components;
+package me.roryclaasen.game.logic;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -10,6 +10,9 @@ import java.util.List;
 import me.roryclaasen.game.GameCanvas;
 import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.handler.GameHandler;
+import me.roryclaasen.game.logic.grid.Grid;
+import me.roryclaasen.game.logic.grid.Tile;
+import me.roryclaasen.game.logic.grid.TileAttributes;
 import me.roryclaasen.game.resource.ResourceManager;
 
 public class Panel {

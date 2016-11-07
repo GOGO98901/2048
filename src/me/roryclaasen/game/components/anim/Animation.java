@@ -2,8 +2,8 @@ package me.roryclaasen.game.components.anim;
 
 import java.awt.Graphics;
 
-import me.roryclaasen.game.components.Panel;
-import me.roryclaasen.game.components.Tile;
+import me.roryclaasen.game.logic.Panel;
+import me.roryclaasen.game.logic.grid.Tile;
 
 public abstract class Animation {
 
@@ -31,11 +31,9 @@ public abstract class Animation {
 		onStop();
 	}
 
-	protected void onStart() {
-	}
+	protected void onStart() {}
 
-	protected void onStop() {
-	}
+	protected void onStop() {}
 
 	public final void remove() {
 		stop();

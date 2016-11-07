@@ -1,20 +1,14 @@
 package me.roryclaasen.game.components.anim;
 
-import java.awt.Graphics;
+import me.roryclaasen.game.logic.Panel;
+import me.roryclaasen.game.logic.grid.Tile;
 
-import me.roryclaasen.game.components.Panel;
-import me.roryclaasen.game.components.Tile;
-import me.roryclaasen.game.components.TileAttributes;
-
-public class PulseAnimation extends Animation {
+public class PulseAnimation extends SimpleAnimation {
 
 	private int time, timeMax, tileSize;
 
-	private TileAttributes attribs;
-
 	public PulseAnimation(Panel panel, Tile tile, int x, int y) {
 		super(panel, tile, x, y);
-		attribs = TileAttributes.DEFAULT.clone();
 		time = 0;
 		timeMax = 20;
 		tileSize = Tile.SIZE;
@@ -32,13 +26,6 @@ public class PulseAnimation extends Animation {
 			if (time > timeMax) {
 				remove();
 			}
-		}
-	}
-
-	@Override
-	public void render(Graphics g) {
-		if (isRunning()) {
-			panel.drawTile(g, tile, x, y, attribs);
 		}
 	}
 }

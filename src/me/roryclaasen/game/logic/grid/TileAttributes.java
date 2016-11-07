@@ -1,4 +1,4 @@
-package me.roryclaasen.game.components;
+package me.roryclaasen.game.logic.grid;
 
 public class TileAttributes {
 
