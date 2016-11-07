@@ -8,6 +8,11 @@ import java.awt.event.MouseMotionListener;
 
 public class Mouse implements MouseListener, MouseMotionListener {
 
+	public static final int BTN_RELEASED = MouseEvent.NOBUTTON;
+	public static final int BTN_LEFT = MouseEvent.BUTTON1;
+	public static final int BTN_WHEEL = MouseEvent.BUTTON2;
+	public static final int BTN_RIGHT = MouseEvent.BUTTON3;
+
 	private int x, y;
 	private int button;
 
@@ -18,17 +23,18 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		button = e.getButton();
+		// update(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		button = e.getButton();
+		update(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		button = -1;
+		update(e);
+		button = BTN_RELEASED;
 	}
 
 	@Override
@@ -39,12 +45,16 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		x = e.getX();
-		y = e.getY();
+		update(e);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		update(e);
+	}
+
+	private void update(MouseEvent e) {
+		button = e.getButton();
 		x = e.getX();
 		y = e.getY();
 	}

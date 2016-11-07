@@ -1,1 +1,3 @@
 game.title=2048 clone
+game.menu.play=Play
+game.menu.exit=Quit

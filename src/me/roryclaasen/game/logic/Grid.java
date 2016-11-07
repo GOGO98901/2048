@@ -39,61 +39,69 @@ public class Grid {
 		newGrid(WIDTH, HEIGHT);
 	}
 
-	public void newGrid(int width, int height) {
+	public void newGridBlank() {
+		newGridBlank(WIDTH, HEIGHT);
+	}
+
+	public void newGridBlank(int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.tiles = null;
 		this.tiles = new int[width * height];
+	}
+
+	public void newGrid(int width, int height) {
+		newGridBlank(width, height);
 		newRandomTile(1);
 		newRandomTile();
 	}
 
 	public void move(Direction direction) {
 		switch (direction) {
-		case UP: {
-			for (int i = 0; i < height; i++) {
-				boolean inc = false;
-				for (int x = 0; x < width; x++) {
-					for (int y = 0; y < height; y++) {
-						inc = moveTile(x, y, 0, -1, inc);
-					}
-				}
-			}
-			break;
-		}
-		case DOWN: {
-			for (int i = 0; i < height; i++) {
-				boolean inc = false;
-				for (int x = 0; x < width; x++) {
-					for (int y = height; y >= 0; y--) {
-						inc = moveTile(x, y, 0, 1, inc);
-					}
-				}
-			}
-			break;
-		}
-		case LEFT: {
-			for (int i = 0; i < width; i++) {
-				boolean inc = false;
-				for (int y = 0; y < height; y++) {
+			case UP: {
+				for (int i = 0; i < height; i++) {
+					boolean inc = false;
 					for (int x = 0; x < width; x++) {
-						inc = moveTile(x, y, -1, 0, inc);
+						for (int y = 0; y < height; y++) {
+							inc = moveTile(x, y, 0, -1, inc);
+						}
 					}
 				}
+				break;
 			}
-			break;
-		}
-		case RIGHT: {
-			for (int i = 0; i < width; i++) {
-				boolean inc = false;
-				for (int y = 0; y < height; y++) {
-					for (int x = width; x >= 0; x--) {
-						inc = moveTile(x, y, 1, 0, inc);
+			case DOWN: {
+				for (int i = 0; i < height; i++) {
+					boolean inc = false;
+					for (int x = 0; x < width; x++) {
+						for (int y = height; y >= 0; y--) {
+							inc = moveTile(x, y, 0, 1, inc);
+						}
 					}
 				}
+				break;
 			}
-			break;
-		}
+			case LEFT: {
+				for (int i = 0; i < width; i++) {
+					boolean inc = false;
+					for (int y = 0; y < height; y++) {
+						for (int x = 0; x < width; x++) {
+							inc = moveTile(x, y, -1, 0, inc);
+						}
+					}
+				}
+				break;
+			}
+			case RIGHT: {
+				for (int i = 0; i < width; i++) {
+					boolean inc = false;
+					for (int y = 0; y < height; y++) {
+						for (int x = width; x >= 0; x--) {
+							inc = moveTile(x, y, 1, 0, inc);
+						}
+					}
+				}
+				break;
+			}
 		}
 	}
 

@@ -9,11 +9,15 @@ import java.util.List;
 
 import me.roryclaasen.game.GameCanvas;
 import me.roryclaasen.game.components.anim.Animation;
+import me.roryclaasen.game.events.ButtonEvent;
+import me.roryclaasen.game.events.ButtonEventListener;
+import me.roryclaasen.game.events.GraphicsElementEvent;
 import me.roryclaasen.game.handler.GameHandler;
 import me.roryclaasen.game.logic.Grid;
 import me.roryclaasen.game.logic.Tile;
 import me.roryclaasen.game.logic.TileAttributes;
 import me.roryclaasen.game.resource.ResourceManager;
+import me.roryclaasen.language.LangUtil;
 
 public class Panel {
 	private GameCanvas canvas;
@@ -25,11 +29,28 @@ public class Panel {
 
 	private boolean animating = false, allowMove = true;
 
+	private Button play;
+
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
 		this.anims = new ArrayList<Animation>();
 		this.grid = new Grid(this);
-		this.grid.newGrid();
+		this.grid.newGridBlank();
+		play = new Button(canvas.getWidth() / 4, canvas.getHeight() - 100, canvas.getWidth() / 2, 75).setText(LangUtil.get("game.menu.play"));
+		play.addListener(new ButtonEventListener() {
+
+			@Override
+			public void hover(GraphicsElementEvent evt) {}
+
+			@Override
+			public void buttonClick(ButtonEvent evt) {
+				grid.newGrid();
+				play.setVisible(false);
+			}
+
+			@Override
+			public void buttonPress(ButtonEvent evt) {}
+		});
 	}
 
 	public void update() {
@@ -37,7 +58,6 @@ public class Panel {
 		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
 		xOffset = (canvas.getWidth() / 2) - (gridWidth / 2);
 		yOffset = (canvas.getHeight() / 2) - (gridHeight / 2);
-
 		if (!animating && allowMove) {
 			if (GameHandler.keys().up ^ GameHandler.keys().down) {
 				animating = true;
@@ -72,7 +92,7 @@ public class Panel {
 			Animation anim = itAnims.next();
 			if (grid.getTile(anim.getX(), anim.getY()) == null) anim.remove();
 			else anim.update();
-			
+
 			if (anim.isRemoved()) {
 				Iterator<int[]> itSkips = grid.getSkipRender().listIterator();
 				while (itSkips.hasNext()) {
@@ -85,6 +105,7 @@ public class Panel {
 			}
 		}
 		if (anims.size() == 0) animating = false;
+		play.update();
 	}
 
 	public void render(Graphics g) {
@@ -116,6 +137,7 @@ public class Panel {
 		while (itAnims.hasNext()) {
 			itAnims.next().render(g);
 		}
+		play.render(g);
 	}
 
 	public void drawTile(Graphics g, Tile tile, int gX, int gY) {
@@ -136,7 +158,7 @@ public class Panel {
 
 	private void drawCenteredString(Graphics g, String text, int cX, int cY, TileAttributes attribs) {
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
-		Rectangle rect = new Rectangle(cX, cY, attribs.getSize(),  attribs.getSize());
+		Rectangle rect = new Rectangle(cX, cY, attribs.getSize(), attribs.getSize());
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 		g.drawString(text, rect.x + x, rect.y + y);
