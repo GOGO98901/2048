@@ -1,6 +1,5 @@
 package me.roryclaasen.game.components;
 
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
