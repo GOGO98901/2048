@@ -12,7 +12,6 @@ import me.roryclaasen.game.GameCanvas;
 import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.handler.GameHandler;
 import me.roryclaasen.game.resource.ResourceManager;
-import me.roryclaasen.util.Log;
 
 public class Panel {
 	private GameCanvas canvas;
