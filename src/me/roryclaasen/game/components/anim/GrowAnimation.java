@@ -6,33 +6,37 @@ import me.roryclaasen.game.components.Panel;
 import me.roryclaasen.game.components.Tile;
 import me.roryclaasen.game.components.TileAttributes;
 
-public class PulseAnimation extends Animation {
+public class GrowAnimation extends Animation {
 
-	private int time, timeMax, tileSize;
+	private int tileSize;
 
 	private TileAttributes attribs;
 
-	public PulseAnimation(Panel panel, Tile tile, int x, int y) {
+	public GrowAnimation(Panel panel, Tile tile, int x, int y) {
 		super(panel, tile, x, y);
 		attribs = TileAttributes.DEFAULT.clone();
-		time = 0;
-		timeMax = 20;
-		tileSize = Tile.SIZE;
+		tileSize = 0;
 	}
 
 	@Override
 	public void update() {
 		if (isRunning()) {
-			time++;
-			tileSize += Math.sin(timeMax / time) + Math.cos(timeMax / time);
+			tileSize += 7;
 			int offset = -(Tile.SIZE - tileSize) / 2;
 			attribs.setxOffset(offset);
 			attribs.setyOffset(offset);
 			attribs.setSize(tileSize);
-			if (time > timeMax) {
+			if (tileSize >= Tile.SIZE) {
 				remove();
 			}
 		}
+	}
+
+	@Override
+	public void onStop() {
+		attribs.setSize(Tile.SIZE);
+		attribs.setxOffset(0);
+		attribs.setyOffset(0);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 
 import me.roryclaasen.game.components.anim.Animation;
+import me.roryclaasen.game.components.anim.GrowAnimation;
 import me.roryclaasen.game.components.anim.PulseAnimation;
 import me.roryclaasen.util.Log;
 
@@ -118,12 +119,14 @@ public class Grid {
 	}
 
 	private void newAnim(Class<? extends Animation> anim, int x, int y) {
-			skipRender.add(new int[] { x, y });
-			if (anim.getCanonicalName().equals(PulseAnimation.class.getCanonicalName())) {
-				panel.addAnim(new PulseAnimation(panel, getTile(x, y), x, y));
-			} else {
-				Log.warn("Unknow animation type");
-			}
+		skipRender.add(new int[] { x, y });
+		if (anim.getCanonicalName().equals(PulseAnimation.class.getCanonicalName())) {
+			panel.addAnim(new PulseAnimation(panel, getTile(x, y), x, y));
+		} else if (anim.getCanonicalName().equals(GrowAnimation.class.getCanonicalName())) {
+			panel.addAnim(new GrowAnimation(panel, getTile(x, y), x, y));
+		} else {
+			Log.warn("Unknow animation type");
+		}
 	}
 
 	public void newRandomTile(int id) {
@@ -138,6 +141,7 @@ public class Grid {
 		}
 		Log.info("Creating new Tile at x=" + x + ", y=" + y + ", id=" + id);
 		tiles[x + y * width] = id;
+		newAnim(GrowAnimation.class, x, y);
 	}
 
 	public void newRandomTile() {

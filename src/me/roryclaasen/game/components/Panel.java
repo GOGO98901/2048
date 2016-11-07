@@ -15,20 +15,19 @@ import me.roryclaasen.game.resource.ResourceManager;
 
 public class Panel {
 	private GameCanvas canvas;
+	private List<Animation> anims;
 	private Grid grid;
 
 	private int gridWidth, gridHeight;
 	private int xOffset, yOffset;
 
-	private List<Animation> anims;
-
 	private boolean animating = false, allowMove = true;
 
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
+		this.anims = new ArrayList<Animation>();
 		this.grid = new Grid(this);
 		this.grid.newGrid();
-		this.anims = new ArrayList<Animation>();
 	}
 
 	public void update() {
@@ -125,18 +124,19 @@ public class Panel {
 		int rX = xOffset + ((Tile.SIZE + 5) * gX) - attribs.getxOffset();
 		int rY = yOffset + ((Tile.SIZE + 5) * gY) - attribs.getyOffset();
 		g.setColor(tile.getColor());
+		g.clipRect(rX, rY, attribs.getSize(), attribs.getSize());
 		g.fillRoundRect(rX, rY, attribs.getSize(), attribs.getSize(), attribs.getTileCurve(), attribs.getTileCurve());
 		g.setColor(ResourceManager.colors.TILE_TEXT.get());
 		g.setFont(ResourceManager.roboto.deriveFont(32f));
-		drawCenteredString(g, "" + tile.getNumber(), rX, rY, g.getFont());
+		drawCenteredString(g, "" + tile.getNumber(), rX, rY, attribs);
+		g.setClip(null);
 	}
 
-	private void drawCenteredString(Graphics g, String text, int cX, int cY, Font font) {
-		FontMetrics metrics = g.getFontMetrics(font);
-		Rectangle rect = new Rectangle(cX, cY, Tile.SIZE, Tile.SIZE);
+	private void drawCenteredString(Graphics g, String text, int cX, int cY, TileAttributes attribs) {
+		FontMetrics metrics = g.getFontMetrics(g.getFont());
+		Rectangle rect = new Rectangle(cX, cY, attribs.getSize(),  attribs.getSize());
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
-		g.setFont(font);
 		g.drawString(text, rect.x + x, rect.y + y);
 	}
 
