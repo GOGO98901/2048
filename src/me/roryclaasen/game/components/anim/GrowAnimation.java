@@ -1,8 +1,8 @@
 package me.roryclaasen.game.components.anim;
 
-import me.roryclaasen.game.logic.Panel;
-import me.roryclaasen.game.logic.grid.Tile;
-import me.roryclaasen.game.logic.grid.TileAttributes;
+import me.roryclaasen.game.graphics.Panel;
+import me.roryclaasen.game.logic.Tile;
+import me.roryclaasen.game.logic.TileAttributes;
 
 public class GrowAnimation extends SimpleAnimation {
 

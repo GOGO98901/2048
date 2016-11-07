@@ -2,8 +2,8 @@ package me.roryclaasen.game.components.anim;
 
 import java.awt.Graphics;
 
-import me.roryclaasen.game.logic.Panel;
-import me.roryclaasen.game.logic.grid.Tile;
+import me.roryclaasen.game.graphics.Panel;
+import me.roryclaasen.game.logic.Tile;
 
 public abstract class Animation {
 

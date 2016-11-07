@@ -1,4 +1,4 @@
-package me.roryclaasen.game.logic.grid;
+package me.roryclaasen.game.logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Random;
 import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.components.anim.GrowAnimation;
 import me.roryclaasen.game.components.anim.PulseAnimation;
-import me.roryclaasen.game.logic.Panel;
+import me.roryclaasen.game.graphics.Panel;
 import me.roryclaasen.util.Log;
 
 public class Grid {

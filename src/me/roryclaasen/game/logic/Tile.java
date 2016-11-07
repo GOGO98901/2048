@@ -1,4 +1,4 @@
-package me.roryclaasen.game.logic.grid;
+package me.roryclaasen.game.logic;
 
 import java.awt.Color;
 
