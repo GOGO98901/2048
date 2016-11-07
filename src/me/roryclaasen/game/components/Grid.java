@@ -44,20 +44,7 @@ public class Grid {
 				boolean inc = false;
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
-						Tile current = getTile(x, y);
-						if (current != null) {
-							Tile adj = getTile(x, y - 1);
-							if (adj == null) {
-								setTile(x, y - 1, current.getStage() + 1);
-								setTile(x, y, 0);
-							} else if (!adj.equals(Tile.edge)) {
-								if (current.equals(adj) && !inc) {
-									inc = true;
-									setTile(x, y - 1, current.getStage() + 2);
-									setTile(x, y, 0);
-								}
-							}
-						}
+						inc = moveTile(x, y, 0, -1, inc);
 					}
 				}
 			}
@@ -67,20 +54,7 @@ public class Grid {
 				boolean inc = false;
 				for (int x = 0; x < width; x++) {
 					for (int y = height; y >= 0; y--) {
-						Tile current = getTile(x, y);
-						if (current != null) {
-							Tile adj = getTile(x, y + 1);
-							if (adj == null) {
-								setTile(x, y + 1, current.getStage() + 1);
-								setTile(x, y, 0);
-							} else if (!adj.equals(Tile.edge)) {
-								if (current.equals(adj) && !inc) {
-									inc = true;
-									setTile(x, y + 1, current.getStage() + 2);
-									setTile(x, y, 0);
-								}
-							}
-						}
+						inc = moveTile(x, y, 0, 1, inc);
 					}
 				}
 			}
@@ -90,20 +64,7 @@ public class Grid {
 				boolean inc = false;
 				for (int y = 0; y < height; y++) {
 					for (int x = 0; x < width; x++) {
-						Tile current = getTile(x, y);
-						if (current != null) {
-							Tile adj = getTile(x - 1, y);
-							if (adj == null) {
-								setTile(x - 1, y, current.getStage() + 1);
-								setTile(x, y, 0);
-							} else if (!adj.equals(Tile.edge)) {
-								if (current.equals(adj) && !inc) {
-									inc = true;
-									setTile(x - 1, y, current.getStage() + 2);
-									setTile(x, y, 0);
-								}
-							}
-						}
+						inc = moveTile(x, y, -1, 0, inc);
 					}
 				}
 			}
@@ -113,24 +74,30 @@ public class Grid {
 				boolean inc = false;
 				for (int y = 0; y < height; y++) {
 					for (int x = width; x >= 0; x--) {
-						Tile current = getTile(x, y);
-						if (current != null) {
-							Tile adj = getTile(x + 1, y);
-							if (adj == null) {
-								setTile(x + 1, y, current.getStage() + 1);
-								setTile(x, y, 0);
-							} else if (!adj.equals(Tile.edge)) {
-								if (current.equals(adj) && !inc) {
-									inc = true;
-									setTile(x + 1, y, current.getStage() + 2);
-									setTile(x, y, 0);
-								}
-							}
-						}
+						inc = moveTile(x, y, 1, 0, inc);
 					}
 				}
 			}
 		}
+	}
+
+	private boolean moveTile(int x, int y, int xOffset, int yOffset, boolean inc) {
+		Tile current = getTile(x, y);
+		if (current != null) {
+			Tile adj = getTile(x + xOffset, y + yOffset);
+			if (adj == null) {
+				setTile(x + xOffset, y + yOffset, current.getStage() + 1);
+				setTile(x, y, 0);
+			} else if (!adj.equals(Tile.edge)) {
+				if (current.equals(adj)) {
+					if (inc) setTile(x + xOffset, y + yOffset, current.getStage() + 1);
+					else setTile(x + xOffset, y + yOffset, current.getStage() + 2);
+					inc = true;
+					setTile(x, y, 0);
+				}
+			}
+		}
+		return inc;
 	}
 
 	public void newRandomTile(int id) {
