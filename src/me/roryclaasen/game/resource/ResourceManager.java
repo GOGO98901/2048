@@ -30,8 +30,6 @@ public class ResourceManager {
 		DEBUG(173, 255, 47), //
 		DEBUG_BACK(Color.BLACK, 255 / 2), //
 		PANEL_BACKGROUND("8D6E63"), //
-		BUTTON_BACK("8D6E63"), //
-		BUTTON_TEXT(Color.WHITE), //
 		TILE_TEXT(Color.WHITE), //
 		TILE_BLANK("dcd3d0", 100), //
 		TILE_ONE("c1b1ab"), //

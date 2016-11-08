@@ -33,7 +33,7 @@ public class Button extends GraphicsElement {
 	}
 
 	@Override
-	public void renderElement(Graphics g) {
+	protected void renderElement(Graphics g) {
 		g.setColor(ResourceManager.colors.PANEL_BACKGROUND.get());
 		g.fillRoundRect(bounds.x - border, bounds.y - border, bounds.width + border * 2, bounds.height + border * 2, arcSize, arcSize);
 		g.setColor(ResourceManager.colors.TILE_BLANK.get());
@@ -44,14 +44,14 @@ public class Button extends GraphicsElement {
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
 		int x = (bounds.width - metrics.stringWidth(text)) / 2;
 		int y = ((bounds.height - metrics.getHeight()) / 2) + metrics.getAscent();
-		g.setColor(ResourceManager.colors.BUTTON_TEXT.get());
+		g.setColor(ResourceManager.colors.TILE_TEXT.get());
 		g.drawString(text, bounds.x + x, bounds.y + y);
 	}
 
 	@Override
-	public void updateElement() {
+	protected void updateElement() {
 		if (bounds.contains(GameHandler.mouse().getPos()) && !outside) {
-			callListenerHover();
+			super.updateElement();
 			if (GameHandler.mouse().getButton() == Mouse.BTN_LEFT) {
 				callListenerPress();
 				accessed = true;

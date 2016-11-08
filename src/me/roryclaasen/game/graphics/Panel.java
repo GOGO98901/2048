@@ -88,7 +88,6 @@ public class Panel {
 		});
 
 		exit.addListener(new ButtonEventListener() {
-
 			@Override
 			public void hover(GraphicsElementEvent evt) {
 			}

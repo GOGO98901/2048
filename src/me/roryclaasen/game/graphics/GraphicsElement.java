@@ -8,6 +8,7 @@ import java.util.List;
 
 import me.roryclaasen.game.events.GraphicsElementEvent;
 import me.roryclaasen.game.events.GraphicsElementEventListener;
+import me.roryclaasen.game.handler.GameHandler;
 
 public abstract class GraphicsElement {
 
@@ -85,7 +86,11 @@ public abstract class GraphicsElement {
 
 	protected abstract void renderElement(Graphics g);
 
-	protected void updateElement() {}
+	protected void updateElement() {
+		if (bounds.contains(GameHandler.mouse().getPos())) {
+			callListenerHover();
+		}
+	}
 
 	public boolean isVisible() {
 		return visible;
