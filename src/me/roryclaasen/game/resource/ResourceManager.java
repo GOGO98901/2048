@@ -31,15 +31,18 @@ public class ResourceManager {
 		DEBUG_BACK(Color.BLACK, 255 / 2), //
 		PANEL_BACKGROUND("8D6E63"), //
 		TILE_TEXT(Color.WHITE), //
-		TILE_BLANK("dcd3d0", 100), //
-		TILE_ONE("c1b1ab"), //
-		TILE_TWO("7a625a"), //
-		TILE_THREE("FFB74D"), //
-		TILE_FOUR("FF8A65"), //
-		TILE_FIVE("AED581"), //
-		TILE_SIX("CDDC39"), //
-		TILE_SEVEN("4DB6AC"), //
-		TILE_EIGHT("81C784"), //
+		TILE_BLANK("eee4da", 100), //
+		TILE_ONE("eee4da"), // 2
+		TILE_TWO("edc22e"), // 4
+		TILE_THREE("f78e48"), // 8
+		TILE_FOUR("fc5e2e"), // 16
+		TILE_FIVE("ff3333"), // 32
+		TILE_SIX("ff0000"), // 64 
+		TILE_SEVEN("4DB6AC"), // 128
+		TILE_EIGHT("81C784"), // 256
+		TILE_NINE("81C784"), // 512
+		TILE_TEN("81C784"), // 1024
+		TILE_ELEVEN("81C784"), // 2048
 		;
 
 		private Color color;
