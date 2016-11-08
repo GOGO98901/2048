@@ -23,38 +23,34 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// update(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		update(e);
+		button = e.getButton();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		update(e);
 		button = BTN_RELEASED;
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		update(e);
+		x = e.getX();
+		y = e.getY();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		update(e);
-	}
-
-	private void update(MouseEvent e) {
-		button = e.getButton();
 		x = e.getX();
 		y = e.getY();
 	}

@@ -13,8 +13,10 @@ public class GameCanvas extends Canvas {
 	private final GameThread _gameThread;
 
 	private int width = 800, height = 600;
-	
+
 	private Panel gamePanel;
+
+	private boolean debug = false;
 
 	public GameCanvas(final GameThread thread) {
 		_gameThread = thread;
@@ -38,16 +40,18 @@ public class GameCanvas extends Canvas {
 			}
 			Graphics g = bs.getDrawGraphics();
 
-			g.setColor(ResourceManager.colors.BACKGROUND.get());
-			g.fillRect(0, 0, width, height);
-			g.setColor(ResourceManager.colors.DEBUG_BACK.get());
-			g.fillRect(0, 0, 50, 25);
-			g.setColor(ResourceManager.colors.DEBUG.get());
-			g.drawString(_gameThread.getFps() + " fps", 2, 11);
-			g.drawString(_gameThread.getUps() + " ups", 2, 22);
-
-			gamePanel.render(g);
+			if (debug) {
+				g.setColor(ResourceManager.colors.BACKGROUND.get());
+				g.fillRect(0, 0, width, height);
+				g.setColor(ResourceManager.colors.DEBUG_BACK.get());
+				g.fillRect(0, 0, 50, 25);
+				g.setColor(ResourceManager.colors.DEBUG.get());
+				g.drawString(_gameThread.getFps() + " fps", 2, 11);
+				g.drawString(_gameThread.getUps() + " ups", 2, 22);
+			}
 			
+			gamePanel.render(g);
+
 			g.dispose();
 			bs.show();
 		} catch (Exception e) {
@@ -59,6 +63,5 @@ public class GameCanvas extends Canvas {
 	public GameThread getThread() {
 		return _gameThread;
 	}
-	
-	
+
 }

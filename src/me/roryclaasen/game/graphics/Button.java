@@ -62,7 +62,10 @@ public class Button extends GraphicsElement {
 			}
 		}
 		if (GameHandler.mouse().getButton() == Mouse.BTN_LEFT) {
-			if (!bounds.contains(GameHandler.mouse().getPos())) outside = true;
+			if (!bounds.contains(GameHandler.mouse().getPos())) {
+				outside = true;
+				accessed = false;
+			}
 		} else outside = false;
 	}
 
