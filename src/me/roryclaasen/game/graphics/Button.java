@@ -13,7 +13,7 @@ import me.roryclaasen.game.handler.Mouse;
 import me.roryclaasen.game.resource.ResourceManager;
 
 public class Button extends GraphicsElement {
-	private int border = 4;
+	private int border = 5;
 	private int arcSize = 10;
 
 	private String text;
@@ -27,20 +27,18 @@ public class Button extends GraphicsElement {
 		super(bounds);
 	}
 
-	protected void init() {}
-
 	public Button setText(String text) {
 		this.text = text;
 		return this;
 	}
 
 	@Override
-	public void renderE(Graphics g) {
-		g.setColor(ResourceManager.colors.BACKGROUND.get().darker());
+	public void renderElement(Graphics g) {
+		g.setColor(ResourceManager.colors.PANEL_BACKGROUND.get());
 		g.fillRoundRect(bounds.x - border, bounds.y - border, bounds.width + border * 2, bounds.height + border * 2, arcSize, arcSize);
-		g.setColor(ResourceManager.colors.BUTTON_BACK.get());
-		if (accessed) g.setColor(ResourceManager.colors.BUTTON_BACK.get().brighter());
-		g.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, arcSize, arcSize);
+		g.setColor(ResourceManager.colors.TILE_BLANK.get());
+		if (accessed) g.setColor(ResourceManager.colors.TILE_ONE.get());
+		g.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, (int) (arcSize * 0.9), (int) (arcSize * 0.9));
 
 		g.setFont(ResourceManager.roboto.deriveFont((float) bounds.height * 0.75f));
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
@@ -51,7 +49,7 @@ public class Button extends GraphicsElement {
 	}
 
 	@Override
-	public void updateE() {
+	public void updateElement() {
 		if (bounds.contains(GameHandler.mouse().getPos()) && !outside) {
 			callListenerHover();
 			if (GameHandler.mouse().getButton() == Mouse.BTN_LEFT) {

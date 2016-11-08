@@ -148,7 +148,7 @@ public class Grid {
 				if (tiles[x + y * width] == 0) placed = true;
 			}
 		}
-		Log.info("Creating new Tile at x=" + x + ", y=" + y + ", id=" + id);
+		// Log.info("Creating new Tile at x=" + x + ", y=" + y + ", id=" + id);
 		tiles[x + y * width] = id;
 		newAnim(GrowAnimation.class, x, y);
 	}

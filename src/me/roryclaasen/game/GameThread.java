@@ -42,10 +42,13 @@ public class GameThread implements Runnable {
 
 	public void stop() {
 		if (running) {
+			running = false;
 			Log.info("Attempting to stop the thread");
 			display.destroy();
 			try {
-				_thread.join();
+				_thread.join(1000);
+				_thread = null;
+				Log.info("Stopped");
 			} catch (InterruptedException e) {
 				Log.warn("Unable to stop the thread");
 				Log.stackWarn(e);

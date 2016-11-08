@@ -55,4 +55,10 @@ public class GameCanvas extends Canvas {
 			Log.stackWarn(e);
 		}
 	}
+
+	public GameThread getThread() {
+		return _gameThread;
+	}
+	
+	
 }

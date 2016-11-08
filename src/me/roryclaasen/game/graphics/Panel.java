@@ -18,6 +18,7 @@ import me.roryclaasen.game.logic.Tile;
 import me.roryclaasen.game.logic.TileAttributes;
 import me.roryclaasen.game.resource.ResourceManager;
 import me.roryclaasen.language.LangUtil;
+import me.roryclaasen.util.Log;
 
 public class Panel {
 	private GameCanvas canvas;
@@ -29,35 +30,90 @@ public class Panel {
 
 	private boolean animating = false, allowMove = true;
 
-	private Button play;
+	private Button play, exit, restart;
 
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
 		this.anims = new ArrayList<Animation>();
 		this.grid = new Grid(this);
 		this.grid.newGridBlank();
-		play = new Button(canvas.getWidth() / 4, canvas.getHeight() - 100, canvas.getWidth() / 2, 75).setText(LangUtil.get("game.menu.play"));
+
+		this.updateGridVars();
+		this.initButtons();
+	}
+
+	private void initButtons() {
+		int buttonWidth = canvas.getWidth() / 6;
+		int buttonHeight = 40;
+		int buttonY = canvas.getHeight() - 81;
+		play = new Button(xOffset, buttonY, buttonWidth, buttonHeight).setText(LangUtil.get("game.menu.play"));
+		restart = new Button(play.getBounds()).setText(LangUtil.get("game.menu.restart"));
+		exit = new Button(xOffset + gridWidth - buttonWidth, buttonY, buttonWidth, buttonHeight).setText(LangUtil.get("game.menu.exit"));
+
 		play.addListener(new ButtonEventListener() {
 
 			@Override
-			public void hover(GraphicsElementEvent evt) {}
-
-			@Override
-			public void buttonClick(ButtonEvent evt) {
-				grid.newGrid();
-				play.setVisible(false);
+			public void hover(GraphicsElementEvent evt) {
 			}
 
 			@Override
-			public void buttonPress(ButtonEvent evt) {}
+			public void buttonClick(ButtonEvent evt) {
+				Log.info("Game starting for the first time");
+				grid.newGrid();
+				play.setVisible(false);
+				restart.setVisible(true);
+			}
+
+			@Override
+			public void buttonPress(ButtonEvent evt) {
+			}
+		});
+
+		restart.setVisible(false);
+		restart.addListener(new ButtonEventListener() {
+
+			@Override
+			public void hover(GraphicsElementEvent evt) {
+			}
+
+			@Override
+			public void buttonPress(ButtonEvent evt) {
+			}
+
+			@Override
+			public void buttonClick(ButtonEvent evt) {
+				Log.info("Game restating");
+				grid.newGrid();
+			}
+		});
+
+		exit.addListener(new ButtonEventListener() {
+
+			@Override
+			public void hover(GraphicsElementEvent evt) {
+			}
+
+			@Override
+			public void buttonPress(ButtonEvent evt) {
+			}
+
+			@Override
+			public void buttonClick(ButtonEvent evt) {
+				Log.info("Game in shutdown");
+				canvas.getThread().stop();
+			}
 		});
 	}
 
-	public void update() {
+	private void updateGridVars() {
 		gridWidth = ((Tile.SIZE + 5) * grid.getWidth()) - 5;
 		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
 		xOffset = (canvas.getWidth() / 2) - (gridWidth / 2);
 		yOffset = (canvas.getHeight() / 2) - (gridHeight / 2);
+	}
+
+	public void update() {
+		updateGridVars();
 		if (!animating && allowMove) {
 			if (GameHandler.keys().up ^ GameHandler.keys().down) {
 				animating = true;
@@ -105,7 +161,10 @@ public class Panel {
 			}
 		}
 		if (anims.size() == 0) animating = false;
+
 		play.update();
+		restart.update();
+		exit.update();
 	}
 
 	public void render(Graphics g) {
@@ -137,7 +196,10 @@ public class Panel {
 		while (itAnims.hasNext()) {
 			itAnims.next().render(g);
 		}
+
 		play.render(g);
+		restart.render(g);
+		exit.render(g);
 	}
 
 	public void drawTile(Graphics g, Tile tile, int gX, int gY) {

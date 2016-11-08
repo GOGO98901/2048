@@ -17,6 +17,5 @@ public class Bootstarp {
 			Log.info("Game initialization took " + (initDate.getTime() - startDate.getTime()) + " mills");
 			game.start();
 		} else Log.error("Game initialization... FAILED");
-		Log.info("Program in shutdown");
 	}
 }

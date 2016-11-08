@@ -27,10 +27,27 @@ public abstract class GraphicsElement {
 		init();
 	}
 
-	protected void init() {}
+	protected void init() {
+	}
 
-	public Rectangle getBounds() {
+	public final Rectangle getBounds() {
 		return bounds;
+	}
+
+	public final int getX() {
+		return bounds.x;
+	}
+
+	public final int getY() {
+		return bounds.y;
+	}
+
+	public final int getWidth() {
+		return bounds.width;
+	}
+
+	public final int getHeight() {
+		return bounds.height;
 	}
 
 	public void callListenerHover() {
@@ -59,16 +76,16 @@ public abstract class GraphicsElement {
 	}
 
 	public final void render(Graphics g) {
-		if (visible) renderE(g);
+		if (visible) renderElement(g);
 	}
 
 	public final void update() {
-		if (visible) updateE();
+		if (visible) updateElement();
 	}
 
-	protected abstract void renderE(Graphics g);
+	protected abstract void renderElement(Graphics g);
 
-	protected void updateE() {}
+	protected void updateElement() {}
 
 	public boolean isVisible() {
 		return visible;
