@@ -60,10 +60,10 @@ public class Grid {
 		switch (direction) {
 		case UP: {
 			for (int i = 0; i < height; i++) {
-				boolean inc = false;
+				boolean increment = false;
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
-						inc = moveTile(x, y, 0, -1, inc);
+						increment = moveTile(x, y, 0, -1, increment);
 					}
 				}
 			}
@@ -71,10 +71,10 @@ public class Grid {
 		}
 		case DOWN: {
 			for (int i = 0; i < height; i++) {
-				boolean inc = false;
+				boolean increment = false;
 				for (int x = 0; x < width; x++) {
 					for (int y = height; y >= 0; y--) {
-						inc = moveTile(x, y, 0, 1, inc);
+						increment = moveTile(x, y, 0, 1, increment);
 					}
 				}
 			}
@@ -82,10 +82,10 @@ public class Grid {
 		}
 		case LEFT: {
 			for (int i = 0; i < width; i++) {
-				boolean inc = false;
+				boolean increment = false;
 				for (int y = 0; y < height; y++) {
 					for (int x = 0; x < width; x++) {
-						inc = moveTile(x, y, -1, 0, inc);
+						increment = moveTile(x, y, -1, 0, increment);
 					}
 				}
 			}
@@ -93,10 +93,10 @@ public class Grid {
 		}
 		case RIGHT: {
 			for (int i = 0; i < width; i++) {
-				boolean inc = false;
+				boolean increment = false;
 				for (int y = 0; y < height; y++) {
 					for (int x = width; x >= 0; x--) {
-						inc = moveTile(x, y, 1, 0, inc);
+						increment = moveTile(x, y, 1, 0, increment);
 					}
 				}
 			}
@@ -105,7 +105,7 @@ public class Grid {
 		}
 	}
 
-	private boolean moveTile(int x, int y, int xOffset, int yOffset, boolean inc) {
+	private boolean moveTile(int x, int y, int xOffset, int yOffset, boolean increment) {
 		Tile current = getTile(x, y);
 		if (current != null) {
 			Tile adj = getTile(x + xOffset, y + yOffset);
@@ -114,17 +114,15 @@ public class Grid {
 				setTile(x, y, 0);
 			} else if (!adj.equals(Tile.edge)) {
 				if (current.equals(adj)) {
-					if (inc) setTile(x + xOffset, y + yOffset, current.getStage() + 1);
-					else {
-						setTile(x + xOffset, y + yOffset, current.getStage() + 2);
-					}
+					if (increment) setTile(x + xOffset, y + yOffset, current.getStage() + 1);
+					else setTile(x + xOffset, y + yOffset, current.getStage() + 2);
 					newAnim(PulseAnimation.class, x + xOffset, y + yOffset);
-					inc = true;
+					increment = true;
 					setTile(x, y, 0);
 				}
 			}
 		}
-		return inc;
+		return increment;
 	}
 
 	private void newAnim(Class<? extends Animation> animClass, int x, int y) {
