@@ -4,8 +4,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import me.roryclaasen.game.GameCanvas;
 import me.roryclaasen.game.components.anim.Animation;
@@ -23,6 +25,7 @@ import me.roryclaasen.util.Log;
 public class Panel {
 	private GameCanvas canvas;
 	private List<Animation> anims;
+	private Map<String, GraphicsElement> graphics;
 	private Grid grid;
 
 	private int gridWidth, gridHeight;
@@ -30,11 +33,11 @@ public class Panel {
 
 	private boolean animating = false, allowMove = true;
 
-	private Button play, exit, restart;
 
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
 		this.anims = new ArrayList<Animation>();
+		this.graphics = new HashMap<String, GraphicsElement>();
 		this.grid = new Grid(this);
 		this.grid.newGridBlank();
 
@@ -43,13 +46,12 @@ public class Panel {
 	}
 
 	private void initButtons() {
+
 		int buttonWidth = canvas.getWidth() / 6;
 		int buttonHeight = 40;
 		int buttonY = canvas.getHeight() - 81;
-		play = new Button(xOffset, buttonY, buttonWidth, buttonHeight).setText(LangUtil.get("game.menu.play"));
-		restart = new Button(play.getBounds()).setText(LangUtil.get("game.menu.restart"));
-		exit = new Button(xOffset + gridWidth - buttonWidth, buttonY, buttonWidth, buttonHeight).setText(LangUtil.get("game.menu.exit"));
 
+		Button play = new Button(xOffset, buttonY, buttonWidth, buttonHeight).setText(LangUtil.get("game.menu.play"));
 		play.addListener(new ButtonEventListener() {
 
 			@Override
@@ -60,8 +62,8 @@ public class Panel {
 			public void buttonClick(ButtonEvent evt) {
 				Log.info("Game starting for the first time");
 				grid.newGrid();
-				play.setVisible(false);
-				restart.setVisible(true);
+				graphics.get("play").setVisible(false);
+				graphics.get("restart").setVisible(true);
 			}
 
 			@Override
@@ -69,6 +71,7 @@ public class Panel {
 			}
 		});
 
+		Button restart = new Button(play.getBounds()).setText(LangUtil.get("game.menu.restart"));
 		restart.setVisible(false);
 		restart.addListener(new ButtonEventListener() {
 
@@ -87,6 +90,7 @@ public class Panel {
 			}
 		});
 
+		Button exit = new Button(xOffset + gridWidth - buttonWidth, buttonY, buttonWidth, buttonHeight).setText(LangUtil.get("game.menu.exit"));
 		exit.addListener(new ButtonEventListener() {
 			@Override
 			public void hover(GraphicsElementEvent evt) {
@@ -102,6 +106,9 @@ public class Panel {
 				canvas.getThread().stop();
 			}
 		});
+		graphics.put("play", play);
+		graphics.put("restart", restart);
+		graphics.put("exit", exit);
 	}
 
 	private void updateGridVars() {
@@ -140,6 +147,7 @@ public class Panel {
 					}
 				}
 			} else {
+				Log.info("Game over");
 				// TODO game over
 			}
 		} else {
@@ -173,9 +181,9 @@ public class Panel {
 		}
 		if (anims.size() == 0) animating = false;
 
-		play.update();
-		restart.update();
-		exit.update();
+		for (GraphicsElement element : graphics.values()) {
+			element.update();
+		}
 	}
 
 	public void render(Graphics g) {
@@ -208,9 +216,9 @@ public class Panel {
 			itAnims.next().render(g);
 		}
 
-		play.render(g);
-		restart.render(g);
-		exit.render(g);
+		for (GraphicsElement element : graphics.values()) {
+			element.render(g);
+		}
 	}
 
 	public void drawTile(Graphics g, Tile tile, int gX, int gY) {

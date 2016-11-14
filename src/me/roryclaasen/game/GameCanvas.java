@@ -64,5 +64,4 @@ public class GameCanvas extends Canvas {
 	public GameThread getThread() {
 		return _gameThread;
 	}
-
 }
