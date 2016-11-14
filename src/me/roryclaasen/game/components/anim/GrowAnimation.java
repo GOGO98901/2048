@@ -27,11 +27,4 @@ public class GrowAnimation extends SimpleAnimation {
 			}
 		}
 	}
-
-	@Override
-	public void onStop() {
-		attribs.setSize(Tile.SIZE);
-		attribs.setxOffset(0);
-		attribs.setyOffset(0);
-	}
 }

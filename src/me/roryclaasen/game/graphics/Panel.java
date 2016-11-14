@@ -157,7 +157,15 @@ public class Panel {
 				while (itSkips.hasNext()) {
 					int[] coord = itSkips.next();
 					if (coord[0] == anim.getX() && coord[1] == anim.getY()) {
-						itSkips.remove();
+						boolean remove = true;
+						for (Animation animCheck : anims) {
+							if (animCheck.equals(anim)) continue;
+							if (animCheck.getX() == anim.getX() && animCheck.getY() == anim.getY()) {
+								remove = false;
+								animCheck.start();
+							}
+						}
+						if (remove) itSkips.remove();
 					}
 				}
 				itAnims.remove();

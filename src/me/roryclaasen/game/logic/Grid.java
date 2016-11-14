@@ -127,15 +127,26 @@ public class Grid {
 		return inc;
 	}
 
-	private void newAnim(Class<? extends Animation> anim, int x, int y) {
-		skipRender.add(new int[] { x, y });
-		if (anim.getCanonicalName().equals(PulseAnimation.class.getCanonicalName())) {
-			panel.addAnim(new PulseAnimation(panel, getTile(x, y), x, y));
-		} else if (anim.getCanonicalName().equals(GrowAnimation.class.getCanonicalName())) {
-			panel.addAnim(new GrowAnimation(panel, getTile(x, y), x, y));
+	private void newAnim(Class<? extends Animation> animClass, int x, int y) {
+		boolean wait = false;
+		for (int[] pos : skipRender) {
+			if (pos[0] == x && pos[1] == y) {
+				wait = true;
+				break;
+			}
+		}
+		if (!wait) skipRender.add(new int[] { x, y });
+		Animation anim = null;
+		if (animClass.getCanonicalName().equals(PulseAnimation.class.getCanonicalName())) {
+			anim = new PulseAnimation(panel, getTile(x, y), x, y);
+		} else if (animClass.getCanonicalName().equals(GrowAnimation.class.getCanonicalName())) {
+			anim = new GrowAnimation(panel, getTile(x, y), x, y);
 		} else {
 			Log.warn("Unknow animation type");
+			return;
 		}
+		if (wait) anim.pause();
+		panel.addAnim(anim);
 	}
 
 	public void newRandomTile(int id) {

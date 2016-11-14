@@ -23,20 +23,14 @@ public abstract class Animation {
 
 	public final void start() {
 		running = true;
-		onStart();
 	}
 
-	public final void stop() {
+	public final void pause() {
 		running = false;
-		onStop();
 	}
-
-	protected void onStart() {}
-
-	protected void onStop() {}
 
 	public final void remove() {
-		stop();
+		pause();
 		remove = true;
 	}
 
