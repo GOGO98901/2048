@@ -114,29 +114,33 @@ public class Panel {
 	public void update() {
 		updateGridVars();
 		if (!animating && allowMove) {
-			if (GameHandler.keys().up ^ GameHandler.keys().down) {
-				animating = true;
-				allowMove = false;
-				if (GameHandler.keys().up) {
-					grid.move(Grid.Direction.UP);
-					grid.newRandomTile();
+			if (grid.canMove()) {
+				if (GameHandler.keys().up ^ GameHandler.keys().down) {
+					animating = true;
+					allowMove = false;
+					if (GameHandler.keys().up) {
+						grid.move(Grid.Direction.UP);
+						grid.newRandomTile();
+					}
+					if (GameHandler.keys().down) {
+						grid.move(Grid.Direction.DOWN);
+						grid.newRandomTile();
+					}
 				}
-				if (GameHandler.keys().down) {
-					grid.move(Grid.Direction.DOWN);
-					grid.newRandomTile();
+				if (GameHandler.keys().left ^ GameHandler.keys().right) {
+					animating = true;
+					allowMove = false;
+					if (GameHandler.keys().left) {
+						grid.move(Grid.Direction.LEFT);
+						grid.newRandomTile();
+					}
+					if (GameHandler.keys().right) {
+						grid.move(Grid.Direction.RIGHT);
+						grid.newRandomTile();
+					}
 				}
-			}
-			if (GameHandler.keys().left ^ GameHandler.keys().right) {
-				animating = true;
-				allowMove = false;
-				if (GameHandler.keys().left) {
-					grid.move(Grid.Direction.LEFT);
-					grid.newRandomTile();
-				}
-				if (GameHandler.keys().right) {
-					grid.move(Grid.Direction.RIGHT);
-					grid.newRandomTile();
-				}
+			} else {
+				// TODO game over
 			}
 		} else {
 			if (!(GameHandler.keys().up || GameHandler.keys().down || GameHandler.keys().left || GameHandler.keys().right)) allowMove = true;

@@ -58,50 +58,50 @@ public class Grid {
 
 	public void move(Direction direction) {
 		switch (direction) {
-			case UP: {
-				for (int i = 0; i < height; i++) {
-					boolean inc = false;
-					for (int x = 0; x < width; x++) {
-						for (int y = 0; y < height; y++) {
-							inc = moveTile(x, y, 0, -1, inc);
-						}
-					}
-				}
-				break;
-			}
-			case DOWN: {
-				for (int i = 0; i < height; i++) {
-					boolean inc = false;
-					for (int x = 0; x < width; x++) {
-						for (int y = height; y >= 0; y--) {
-							inc = moveTile(x, y, 0, 1, inc);
-						}
-					}
-				}
-				break;
-			}
-			case LEFT: {
-				for (int i = 0; i < width; i++) {
-					boolean inc = false;
+		case UP: {
+			for (int i = 0; i < height; i++) {
+				boolean inc = false;
+				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++) {
-						for (int x = 0; x < width; x++) {
-							inc = moveTile(x, y, -1, 0, inc);
-						}
+						inc = moveTile(x, y, 0, -1, inc);
 					}
 				}
-				break;
 			}
-			case RIGHT: {
-				for (int i = 0; i < width; i++) {
-					boolean inc = false;
-					for (int y = 0; y < height; y++) {
-						for (int x = width; x >= 0; x--) {
-							inc = moveTile(x, y, 1, 0, inc);
-						}
+			break;
+		}
+		case DOWN: {
+			for (int i = 0; i < height; i++) {
+				boolean inc = false;
+				for (int x = 0; x < width; x++) {
+					for (int y = height; y >= 0; y--) {
+						inc = moveTile(x, y, 0, 1, inc);
 					}
 				}
-				break;
 			}
+			break;
+		}
+		case LEFT: {
+			for (int i = 0; i < width; i++) {
+				boolean inc = false;
+				for (int y = 0; y < height; y++) {
+					for (int x = 0; x < width; x++) {
+						inc = moveTile(x, y, -1, 0, inc);
+					}
+				}
+			}
+			break;
+		}
+		case RIGHT: {
+			for (int i = 0; i < width; i++) {
+				boolean inc = false;
+				for (int y = 0; y < height; y++) {
+					for (int x = width; x >= 0; x--) {
+						inc = moveTile(x, y, 1, 0, inc);
+					}
+				}
+			}
+			break;
+		}
 		}
 	}
 
@@ -139,22 +139,24 @@ public class Grid {
 	}
 
 	public void newRandomTile(int id) {
-		int x = 0, y = 0;
-		boolean placed = false;
-		while (placed == false) {
-			x = random.nextInt(width);
-			y = random.nextInt(height);
-			if (x > 0 || x < width || y > 0 || y < height) {
-				if (tiles[x + y * width] == 0) placed = true;
+		if (!isFull()) {
+			int x = 0, y = 0;
+			boolean placed = false;
+			while (placed == false) {
+				x = random.nextInt(width);
+				y = random.nextInt(height);
+				if (x > 0 || x < width || y > 0 || y < height) {
+					if (tiles[x + y * width] == 0) placed = true;
+				}
 			}
+			// Log.info("Creating new Tile at x=" + x + ", y=" + y + ", id=" + id);
+			tiles[x + y * width] = id;
+			newAnim(GrowAnimation.class, x, y);
 		}
-		// Log.info("Creating new Tile at x=" + x + ", y=" + y + ", id=" + id);
-		tiles[x + y * width] = id;
-		newAnim(GrowAnimation.class, x, y);
 	}
 
 	public void newRandomTile() {
-		if (getHightestStage() >= 32) newRandomTile(random.nextInt(3) + 1);
+		if (getHightestStage() >= 5) newRandomTile(random.nextInt(3) + 1);
 		else newRandomTile(1);
 	}
 
@@ -164,11 +166,16 @@ public class Grid {
 	}
 
 	public Tile getTile(int x, int y) {
-		if (x < 0 || x >= width || y < 0 || y >= height) return Tile.edge;
-		int id = tiles[x + y * width];
+		int id = getTileId(x, y);
+		if (id == -1) return Tile.edge;
 		if (id <= 0) return null;
 		if (!tileMap.containsKey(id)) tileMap.put(id, new Tile(id - 1));
 		return tileMap.get(id);
+	}
+
+	private int getTileId(int x, int y) {
+		if (x < 0 || x >= width || y < 0 || y >= height) return -1;
+		return tiles[x + y * width];
 	}
 
 	public int getHightestStage() {
@@ -183,6 +190,28 @@ public class Grid {
 			}
 		}
 		return max;
+	}
+
+	public boolean canMove() {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				int current = tiles[x + y * width];
+				int up = getTileId(x, y - 1);
+				int down = getTileId(x, y + 1);
+				int left = getTileId(x - 1, y);
+				int right = getTileId(x + 1, y);
+				if ((current == 0) || (current == 0) || (current == 0) || (current == 0) || (current == up) || (current == down) || (current == left) || (current == right)) return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isFull() {
+		boolean check = true;
+		for (int i = 0; i < tiles.length; i++) {
+			if (tiles[i] == 0) check = false;
+		}
+		return check;
 	}
 
 	public List<int[]> getSkipRender() {
