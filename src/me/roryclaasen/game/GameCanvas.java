@@ -39,10 +39,11 @@ public class GameCanvas extends Canvas {
 				return;
 			}
 			Graphics g = bs.getDrawGraphics();
-
+			
+			g.setColor(ResourceManager.colors.BACKGROUND.get());
+			g.fillRect(0, 0, width, height);
+			
 			if (debug) {
-				g.setColor(ResourceManager.colors.BACKGROUND.get());
-				g.fillRect(0, 0, width, height);
 				g.setColor(ResourceManager.colors.DEBUG_BACK.get());
 				g.fillRect(0, 0, 50, 25);
 				g.setColor(ResourceManager.colors.DEBUG.get());

@@ -165,7 +165,7 @@ public class Grid {
 	}
 
 	public void newRandomTile() {
-		if (getHightestStage() >= 5) newRandomTile(random.nextInt(3) + 1);
+		if (getHightestStage() >= 4) newRandomTile(random.nextInt(2) + 1);
 		else newRandomTile(1);
 	}
 
