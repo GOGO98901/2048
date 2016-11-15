@@ -30,7 +30,7 @@ public class Panel {
 	private Map<String, GraphicsElement> graphics;
 	private Grid grid;
 
-	private int gridWidth, gridHeight;
+	private int gridWidth, gridHeight, buttonWidth;
 	private int xOffset, yOffset;
 
 	private boolean animating = false, allowMove = true;
@@ -48,7 +48,7 @@ public class Panel {
 
 	private void initButtons() {
 
-		int buttonWidth = canvas.getWidth() / 6;
+		buttonWidth = canvas.getWidth() / 6;
 		int buttonHeight = 40;
 		int buttonY = canvas.getHeight() - 81;
 
@@ -210,6 +210,13 @@ public class Panel {
 		}
 		if (anims.size() == 0) animating = false;
 
+		{
+			int buttonY = canvas.getHeight() - 81;
+
+			graphics.get("play").bounds.setLocation(xOffset, buttonY);
+			graphics.get("restart").bounds.setLocation(xOffset, buttonY);
+			graphics.get("exit").bounds.setLocation(xOffset + gridWidth - buttonWidth, buttonY);
+		}
 		for (GraphicsElement element : graphics.values()) {
 			element.update();
 		}

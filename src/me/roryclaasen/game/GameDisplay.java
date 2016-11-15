@@ -8,14 +8,15 @@ import me.roryclaasen.language.LangUtil;
 import me.roryclaasen.util.Log;
 
 public class GameDisplay {
-	private Dimension size = new Dimension(800, 600);
+	public static final Dimension SIZE = new Dimension(800, 600);
 	private JFrame frame;
 
 	public void init(GameCanvas canvas) {
 		frame = new JFrame();
 		frame.add(canvas);
-		frame.setResizable(false);
+		// frame.setResizable(false);
 		frame.pack();
+		frame.setMinimumSize(SIZE);
 		frame.setTitle(LangUtil.get("game.title"));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
@@ -34,14 +35,10 @@ public class GameDisplay {
 	}
 
 	public int getWidth() {
-		return size.width;
+		return frame.getWidth();
 	}
 
 	public int getHeight() {
-		return size.height;
-	}
-
-	public Dimension getSize() {
-		return size;
+		return frame.getHeight();
 	}
 }
