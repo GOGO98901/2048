@@ -13,6 +13,8 @@ import me.roryclaasen.game.GameCanvas;
 import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.events.ButtonEvent;
 import me.roryclaasen.game.events.ButtonEventListener;
+import me.roryclaasen.game.events.DropboxEvent;
+import me.roryclaasen.game.events.DropboxEventListener;
 import me.roryclaasen.game.events.GraphicsElementEvent;
 import me.roryclaasen.game.handler.GameHandler;
 import me.roryclaasen.game.logic.Grid;
@@ -32,7 +34,6 @@ public class Panel {
 	private int xOffset, yOffset;
 
 	private boolean animating = false, allowMove = true;
-
 
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
@@ -106,9 +107,37 @@ public class Panel {
 				canvas.getThread().stop();
 			}
 		});
+
+		Dropbox mode = new Dropbox(20, 20, buttonWidth, buttonHeight);
+		mode.addItem("4 x 4");
+		mode.addItem("5 x 5");
+		mode.addItem("6 x 6");
+		mode.addListener(new DropboxEventListener() {
+
+			@Override
+			public void hover(GraphicsElementEvent evt) {
+			}
+
+			@Override
+			public void dropboxSelect(DropboxEvent evt) {
+				if (evt.getCurrentItemIndex() == 0) grid.setSizeForStart(4, 4);
+				if (evt.getCurrentItemIndex() == 1) grid.setSizeForStart(5, 5);
+				if (evt.getCurrentItemIndex() == 2) grid.setSizeForStart(6, 6);
+				grid.newGridBlank();
+				graphics.get("play").setVisible(true);
+				graphics.get("restart").setVisible(false);
+			}
+
+			@Override
+			public void dropboxOpen(DropboxEvent evt) {
+			}
+		});
+
 		graphics.put("play", play);
 		graphics.put("restart", restart);
 		graphics.put("exit", exit);
+
+		graphics.put("mode", mode);
 	}
 
 	private void updateGridVars() {

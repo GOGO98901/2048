@@ -20,6 +20,7 @@ public class Grid {
 	private Map<Integer, Tile> tileMap;
 
 	private int width, height;
+	private int nextWidth, nextHeight;
 	private int[] tiles;
 
 	private List<int[]> skipRender;
@@ -33,19 +34,21 @@ public class Grid {
 		this.random = new Random();
 		this.tileMap = new HashMap<Integer, Tile>();
 		this.skipRender = new ArrayList<int[]>();
+		this.nextWidth = this.WIDTH;
+		this.nextHeight = this.WIDTH;
 	}
 
 	public void newGrid() {
-		newGrid(WIDTH, HEIGHT);
+		newGrid(nextWidth, nextHeight);
 	}
 
 	public void newGridBlank() {
-		newGridBlank(WIDTH, HEIGHT);
+		newGridBlank(nextWidth, nextHeight);
 	}
 
 	public void newGridBlank(int width, int height) {
-		this.width = width;
-		this.height = height;
+		this.width = this.nextWidth = width;
+		this.height = this.nextHeight = height;
 		this.tiles = null;
 		this.tiles = new int[width * height];
 	}
@@ -54,6 +57,11 @@ public class Grid {
 		newGridBlank(width, height);
 		newRandomTile(1);
 		newRandomTile();
+	}
+
+	public void setSizeForStart(int width, int height) {
+		nextWidth = width;
+		nextHeight = height;
 	}
 
 	public void move(Direction direction) {
