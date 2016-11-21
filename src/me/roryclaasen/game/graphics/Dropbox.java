@@ -77,7 +77,7 @@ public class Dropbox extends GraphicsElement {
 				if (exBounds.contains(GameHandler.mouse().getPos())) {
 					int y = GameHandler.mouse().getPos().y - bounds.y;
 					hover = ((y / bounds.height) % bounds.height) - 1;
-				}
+				} else hover = -1;
 				if (GameHandler.mouse().getButton() == Mouse.BTN_LEFT) {
 					if (hover >= 0) {
 						current = hover;

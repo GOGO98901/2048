@@ -33,7 +33,7 @@ public class Panel {
 	private int gridWidth, gridHeight, buttonWidth;
 	private int xOffset, yOffset;
 
-	private boolean animating = false, allowMove = true;
+	private boolean started, animating = false, allowMove = true;
 
 	public Panel(GameCanvas canvas) {
 		this.canvas = canvas;
@@ -65,6 +65,7 @@ public class Panel {
 				grid.newGrid();
 				graphics.get("play").setVisible(false);
 				graphics.get("restart").setVisible(true);
+				started = true;
 			}
 
 			@Override
@@ -87,7 +88,9 @@ public class Panel {
 			@Override
 			public void buttonClick(ButtonEvent evt) {
 				Log.info("Game restating");
-				grid.newGrid();
+				graphics.get("play").setVisible(true);
+				graphics.get("restart").setVisible(false);
+				started = true;
 			}
 		});
 
@@ -112,6 +115,7 @@ public class Panel {
 		mode.addItem("4 x 4");
 		mode.addItem("5 x 5");
 		mode.addItem("6 x 6");
+		mode.addItem("10 x 10");
 		mode.addListener(new DropboxEventListener() {
 
 			@Override
@@ -120,10 +124,15 @@ public class Panel {
 
 			@Override
 			public void dropboxSelect(DropboxEvent evt) {
+				int w, h;
+				String[] wh = evt.getCurrentItem().split("x");
+				w = Int
 				if (evt.getCurrentItemIndex() == 0) grid.setSizeForStart(4, 4);
 				if (evt.getCurrentItemIndex() == 1) grid.setSizeForStart(5, 5);
 				if (evt.getCurrentItemIndex() == 2) grid.setSizeForStart(6, 6);
+				if (evt.getCurrentItemIndex() == 3) grid.setSizeForStart(10, 10);
 				grid.newGridBlank();
+				started = false;
 				graphics.get("play").setVisible(true);
 				graphics.get("restart").setVisible(false);
 			}
@@ -149,7 +158,7 @@ public class Panel {
 
 	public void update() {
 		updateGridVars();
-		if (!animating && allowMove) {
+		if (!animating && allowMove && started) {
 			if (grid.canMove()) {
 				if (GameHandler.keys().up ^ GameHandler.keys().down) {
 					animating = true;
