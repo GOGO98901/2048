@@ -47,10 +47,9 @@ public class Panel {
 	}
 
 	private void initButtons() {
-
 		buttonWidth = canvas.getWidth() / 6;
 		int buttonHeight = 40;
-		int buttonY = canvas.getHeight() - 81;
+		int buttonY = canvas.getHeight() - 61;
 
 		Button play = new Button(xOffset, buttonY, buttonWidth, buttonHeight).setText(LangUtil.get("game.menu.play"));
 		play.addListener(new ButtonEventListener() {
@@ -125,12 +124,10 @@ public class Panel {
 			@Override
 			public void dropboxSelect(DropboxEvent evt) {
 				int w, h;
-				String[] wh = evt.getCurrentItem().split("x");
-				w = Int
-				if (evt.getCurrentItemIndex() == 0) grid.setSizeForStart(4, 4);
-				if (evt.getCurrentItemIndex() == 1) grid.setSizeForStart(5, 5);
-				if (evt.getCurrentItemIndex() == 2) grid.setSizeForStart(6, 6);
-				if (evt.getCurrentItemIndex() == 3) grid.setSizeForStart(10, 10);
+				String[] wh = evt.getCurrentItem().toLowerCase().replaceAll(" ", "").split("x");
+				w = Integer.parseInt(wh[0]);
+				h = Integer.parseInt(wh[1]);
+				grid.setSizeForStart(w, h);
 				grid.newGridBlank();
 				started = false;
 				graphics.get("play").setVisible(true);
@@ -220,11 +217,13 @@ public class Panel {
 		if (anims.size() == 0) animating = false;
 
 		{
-			int buttonY = canvas.getHeight() - 81;
+			int buttonY = canvas.getHeight() - 61;
+			int grids = ((Tile.SIZE + 4) * 4) - 5;
+			int buttonX = (canvas.getWidth() / 2) - (grids  / 2);
 
-			graphics.get("play").bounds.setLocation(xOffset, buttonY);
-			graphics.get("restart").bounds.setLocation(xOffset, buttonY);
-			graphics.get("exit").bounds.setLocation(xOffset + gridWidth - buttonWidth, buttonY);
+			graphics.get("play").bounds.setLocation(buttonX, buttonY);
+			graphics.get("restart").bounds.setLocation(buttonX, buttonY);
+			graphics.get("exit").bounds.setLocation(buttonX + grids - buttonWidth, buttonY);
 		}
 		for (GraphicsElement element : graphics.values()) {
 			element.update();
