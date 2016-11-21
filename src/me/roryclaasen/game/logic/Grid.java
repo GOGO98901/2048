@@ -25,6 +25,8 @@ public class Grid {
 
 	private List<int[]> skipRender;
 
+	private int score;
+
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
 	}
@@ -51,6 +53,7 @@ public class Grid {
 		this.height = this.nextHeight = height;
 		this.tiles = null;
 		this.tiles = new int[width * height];
+		this.score = 0;
 	}
 
 	public void newGrid(int width, int height) {
@@ -123,7 +126,10 @@ public class Grid {
 			} else if (!adj.equals(Tile.edge)) {
 				if (current.equals(adj)) {
 					if (increment) setTile(x + xOffset, y + yOffset, current.getStage() + 1);
-					else setTile(x + xOffset, y + yOffset, current.getStage() + 2);
+					else {
+						setTile(x + xOffset, y + yOffset, current.getStage() + 2);
+						score += getTile(x + xOffset, y + yOffset).getNumber();
+					}
 					newAnim(PulseAnimation.class, x + xOffset, y + yOffset);
 					increment = true;
 					setTile(x, y, 0);
@@ -193,6 +199,10 @@ public class Grid {
 	private int getTileId(int x, int y) {
 		if (x < 0 || x >= width || y < 0 || y >= height) return -1;
 		return tiles[x + y * width];
+	}
+	
+	public int getScore(){
+		return score;
 	}
 
 	public int getHightestStage() {

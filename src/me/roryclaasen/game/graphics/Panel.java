@@ -42,11 +42,11 @@ public class Panel {
 		this.grid = new Grid(this);
 		this.grid.newGridBlank();
 
+		this.initGraphicsElements();
 		this.updateGridVars();
-		this.initButtons();
 	}
 
-	private void initButtons() {
+	private void initGraphicsElements() {
 		buttonWidth = canvas.getWidth() / 6;
 		int buttonHeight = 40;
 		int buttonY = canvas.getHeight() - 61;
@@ -60,7 +60,6 @@ public class Panel {
 
 			@Override
 			public void buttonClick(ButtonEvent evt) {
-				Log.info("Game starting for the first time");
 				grid.newGrid();
 				graphics.get("play").setVisible(false);
 				graphics.get("restart").setVisible(true);
@@ -89,7 +88,8 @@ public class Panel {
 				Log.info("Game restating");
 				graphics.get("play").setVisible(true);
 				graphics.get("restart").setVisible(false);
-				started = true;
+				grid.newGridBlank();
+				started = false;
 			}
 		});
 
@@ -109,6 +109,8 @@ public class Panel {
 				canvas.getThread().stop();
 			}
 		});
+
+		TextObject score = new TextObject("0", 0, 0, canvas.getWidth(), 50);
 
 		Dropbox mode = new Dropbox(20, 20, buttonWidth, buttonHeight);
 		mode.addItem("4 x 4");
@@ -143,6 +145,8 @@ public class Panel {
 		graphics.put("restart", restart);
 		graphics.put("exit", exit);
 
+		graphics.put("score", score);
+
 		graphics.put("mode", mode);
 	}
 
@@ -151,6 +155,11 @@ public class Panel {
 		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
 		xOffset = (canvas.getWidth() / 2) - (gridWidth / 2);
 		yOffset = (canvas.getHeight() / 2) - (gridHeight / 2);
+
+		GraphicsElement score = graphics.get("score");
+		score.getBounds().width = canvas.getWidth();
+		score.getBounds().height = yOffset / 2;
+		score.getBounds().y = score.getBounds().height / 2;
 	}
 
 	public void update() {
@@ -219,12 +228,13 @@ public class Panel {
 		{
 			int buttonY = canvas.getHeight() - 61;
 			int grids = ((Tile.SIZE + 4) * 4) - 5;
-			int buttonX = (canvas.getWidth() / 2) - (grids  / 2);
+			int buttonX = (canvas.getWidth() / 2) - (grids / 2);
 
 			graphics.get("play").bounds.setLocation(buttonX, buttonY);
 			graphics.get("restart").bounds.setLocation(buttonX, buttonY);
 			graphics.get("exit").bounds.setLocation(buttonX + grids - buttonWidth, buttonY);
 		}
+		((TextObject) graphics.get("score")).setText(grid.getScore() + "");
 		for (GraphicsElement element : graphics.values()) {
 			element.update();
 		}
