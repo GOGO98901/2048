@@ -43,7 +43,7 @@ public class Panel {
 		this.grid.newGridBlank();
 
 		this.initGraphicsElements();
-		this.updateGridVars();
+		this.updateSizes();
 	}
 
 	private void initGraphicsElements() {
@@ -113,9 +113,11 @@ public class Panel {
 		TextObject score = new TextObject("0", 0, 0, canvas.getWidth(), 50);
 
 		Dropbox mode = new Dropbox(20, 20, buttonWidth, buttonHeight);
+		mode.addItem("2 x 2");
 		mode.addItem("4 x 4");
 		mode.addItem("5 x 5");
 		mode.addItem("6 x 6");
+		mode.addItem("7 x 7");
 		mode.addItem("10 x 10");
 		mode.addListener(new DropboxEventListener() {
 
@@ -141,6 +143,9 @@ public class Panel {
 			}
 		});
 
+		TextObject over = new TextObject(LangUtil.get("game.end"), canvas.getBounds());
+		over.setVisible(false);
+
 		graphics.put("play", play);
 		graphics.put("restart", restart);
 		graphics.put("exit", exit);
@@ -148,9 +153,10 @@ public class Panel {
 		graphics.put("score", score);
 
 		graphics.put("mode", mode);
+		graphics.put("over", over);
 	}
 
-	private void updateGridVars() {
+	private void updateSizes() {
 		gridWidth = ((Tile.SIZE + 5) * grid.getWidth()) - 5;
 		gridHeight = ((Tile.SIZE + 5) * grid.getHeight()) - 5;
 		xOffset = (canvas.getWidth() / 2) - (gridWidth / 2);
@@ -160,10 +166,25 @@ public class Panel {
 		score.getBounds().width = canvas.getWidth();
 		score.getBounds().height = yOffset / 2;
 		score.getBounds().y = score.getBounds().height / 2;
+
+		int buttonY = canvas.getHeight() - 61;
+		int grids = ((Tile.SIZE + 4) * 4) - 5;
+		int buttonX = (canvas.getWidth() / 2) - (grids / 2);
+
+		graphics.get("play").bounds.setLocation(buttonX, buttonY);
+		graphics.get("restart").bounds.setLocation(buttonX, buttonY);
+		graphics.get("exit").bounds.setLocation(buttonX + grids - buttonWidth, buttonY);
+
+		if (!started) {
+			GraphicsElement over = graphics.get("over");
+			int height = gridHeight;
+			if (height > 200) height = 200;
+			over.getBounds().setBounds(xOffset, yOffset + (gridHeight / 2) - (height / 2), gridWidth, height);
+		}
 	}
 
 	public void update() {
-		updateGridVars();
+		updateSizes();
 		if (!animating && allowMove && started) {
 			if (grid.canMove()) {
 				if (GameHandler.keys().up ^ GameHandler.keys().down) {
@@ -191,8 +212,8 @@ public class Panel {
 					}
 				}
 			} else {
-				Log.info("Game over");
-				// TODO game over
+				graphics.get("over").setVisible(true);
+				started = false;
 			}
 		} else {
 			if (!(GameHandler.keys().up || GameHandler.keys().down || GameHandler.keys().left || GameHandler.keys().right)) allowMove = true;
@@ -225,15 +246,6 @@ public class Panel {
 		}
 		if (anims.size() == 0) animating = false;
 
-		{
-			int buttonY = canvas.getHeight() - 61;
-			int grids = ((Tile.SIZE + 4) * 4) - 5;
-			int buttonX = (canvas.getWidth() / 2) - (grids / 2);
-
-			graphics.get("play").bounds.setLocation(buttonX, buttonY);
-			graphics.get("restart").bounds.setLocation(buttonX, buttonY);
-			graphics.get("exit").bounds.setLocation(buttonX + grids - buttonWidth, buttonY);
-		}
 		((TextObject) graphics.get("score")).setText(grid.getScore() + "");
 		for (GraphicsElement element : graphics.values()) {
 			element.update();

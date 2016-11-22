@@ -17,6 +17,7 @@ public class TextObject extends GraphicsElement {
 
 	public TextObject(String text, Rectangle bounds) {
 		super(bounds);
+		this.text = text;
 	}
 
 	public TextObject setText(String text) {
