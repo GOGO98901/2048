@@ -2,7 +2,7 @@ package me.roryclaasen.game.components.anim;
 
 import java.awt.Graphics;
 
-import me.roryclaasen.game.graphics.Panel;
+import me.roryclaasen.game.GamePanel;
 import me.roryclaasen.game.logic.Tile;
 import me.roryclaasen.game.logic.TileAttributes;
 
@@ -10,7 +10,7 @@ public abstract class SimpleAnimation extends Animation {
 
 	protected TileAttributes attribs;
 
-	public SimpleAnimation(Panel panel, Tile tile, int x, int y) {
+	public SimpleAnimation(GamePanel panel, Tile tile, int x, int y) {
 		super(panel, tile, x, y);
 		attribs = TileAttributes.DEFAULT.clone();
 	}

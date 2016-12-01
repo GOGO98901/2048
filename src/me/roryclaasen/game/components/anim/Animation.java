@@ -2,19 +2,19 @@ package me.roryclaasen.game.components.anim;
 
 import java.awt.Graphics;
 
-import me.roryclaasen.game.graphics.Panel;
+import me.roryclaasen.game.GamePanel;
 import me.roryclaasen.game.logic.Tile;
 
 public abstract class Animation {
 
-	protected Panel panel;
+	protected GamePanel panel;
 
 	protected int x, y;
 	protected Tile tile;
 
 	private boolean running = false, remove = false;
 
-	public Animation(Panel panel, Tile tile, int x, int y) {
+	public Animation(GamePanel panel, Tile tile, int x, int y) {
 		this.panel = panel;
 		this.x = x;
 		this.y = y;

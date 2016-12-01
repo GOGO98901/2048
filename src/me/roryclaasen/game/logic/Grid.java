@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import me.roryclaasen.game.GamePanel;
 import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.components.anim.GrowAnimation;
 import me.roryclaasen.game.components.anim.PulseAnimation;
-import me.roryclaasen.game.graphics.Panel;
 import me.roryclaasen.util.Log;
 
 public class Grid {
 	public final int WIDTH = 4, HEIGHT = 4;
 
-	private Panel panel;
+	private GamePanel panel;
 	private Random random;
 	private Map<Integer, Tile> tileMap;
 
@@ -31,7 +31,7 @@ public class Grid {
 		UP, DOWN, LEFT, RIGHT
 	}
 
-	public Grid(Panel panel) {
+	public Grid(GamePanel panel) {
 		this.panel = panel;
 		this.random = new Random();
 		this.tileMap = new HashMap<Integer, Tile>();

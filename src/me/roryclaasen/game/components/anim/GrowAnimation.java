@@ -1,6 +1,6 @@
 package me.roryclaasen.game.components.anim;
 
-import me.roryclaasen.game.graphics.Panel;
+import me.roryclaasen.game.GamePanel;
 import me.roryclaasen.game.logic.Tile;
 import me.roryclaasen.game.logic.TileAttributes;
 
@@ -8,7 +8,7 @@ public class GrowAnimation extends SimpleAnimation {
 
 	private int tileSize;
 
-	public GrowAnimation(Panel panel, Tile tile, int x, int y) {
+	public GrowAnimation(GamePanel panel, Tile tile, int x, int y) {
 		super(panel, tile, x, y);
 		attribs = TileAttributes.DEFAULT.clone();
 		tileSize = 0;

@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import me.roryclaasen.game.graphics.Panel;
 import me.roryclaasen.game.resource.ResourceManager;
 import me.roryclaasen.util.Log;
 
@@ -12,7 +11,7 @@ public class GameCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
 	private final GameThread _gameThread;
 
-	private Panel gamePanel;
+	private GamePanel gamePanel;
 
 	private boolean debug = false;
 
@@ -23,7 +22,7 @@ public class GameCanvas extends Canvas {
 
 	public void init() {
 		setSize(_gameThread.getDisplay().getWidth(), _gameThread.getDisplay().getHeight());
-		gamePanel = new Panel(this);
+		gamePanel = new GamePanel(this);
 	}
 
 	public void update() {

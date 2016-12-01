@@ -1,13 +1,13 @@
 package me.roryclaasen.game.components.anim;
 
-import me.roryclaasen.game.graphics.Panel;
+import me.roryclaasen.game.GamePanel;
 import me.roryclaasen.game.logic.Tile;
 
 public class PulseAnimation extends SimpleAnimation {
 
 	private int time, timeMax, tileSize;
 
-	public PulseAnimation(Panel panel, Tile tile, int x, int y) {
+	public PulseAnimation(GamePanel panel, Tile tile, int x, int y) {
 		super(panel, tile, x, y);
 		time = 0;
 		timeMax = 20;
