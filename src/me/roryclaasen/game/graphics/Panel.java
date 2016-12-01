@@ -47,6 +47,7 @@ public class Panel {
 	}
 
 	private void initGraphicsElements() {
+		graphics.clear();
 		buttonWidth = canvas.getWidth() / 6;
 		int buttonHeight = 40;
 		int buttonY = canvas.getHeight() - 61;
@@ -142,6 +143,7 @@ public class Panel {
 			public void dropboxOpen(DropboxEvent evt) {
 			}
 		});
+		mode.setCurrentIndex(1);
 
 		TextObject over = new TextObject(LangUtil.get("game.end"), canvas.getBounds());
 		over.setVisible(false);

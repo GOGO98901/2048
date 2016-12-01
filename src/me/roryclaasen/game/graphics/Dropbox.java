@@ -125,6 +125,10 @@ public class Dropbox extends GraphicsElement {
 		return items;
 	}
 
+	public void setCurrentIndex(int index) {
+		current = index;
+	}
+
 	public int getCurrentItemIndex() {
 		return current;
 	}
