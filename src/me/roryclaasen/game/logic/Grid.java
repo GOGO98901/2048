@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import me.roryclaasen.game.GamePanel;
+import me.roryclaasen.game.components.GamePanel;
 import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.components.anim.GrowAnimation;
 import me.roryclaasen.game.components.anim.PulseAnimation;

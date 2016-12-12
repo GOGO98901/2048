@@ -1,6 +1,6 @@
 package me.roryclaasen.game.components.anim;
 
-import me.roryclaasen.game.GamePanel;
+import me.roryclaasen.game.components.GamePanel;
 import me.roryclaasen.game.logic.Tile;
 import me.roryclaasen.game.logic.TileAttributes;
 

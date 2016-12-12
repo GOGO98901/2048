@@ -1,4 +1,4 @@
-package me.roryclaasen.game;
+package me.roryclaasen.game.components;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import me.roryclaasen.game.GameCanvas;
 import me.roryclaasen.game.components.anim.Animation;
 import me.roryclaasen.game.events.ButtonEvent;
 import me.roryclaasen.game.events.ButtonEventListener;

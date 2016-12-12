@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import me.roryclaasen.game.components.GamePanel;
 import me.roryclaasen.game.resource.ResourceManager;
 import me.roryclaasen.util.Log;
 
